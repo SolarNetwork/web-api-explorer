@@ -1,19 +1,14 @@
 const Merge = require("webpack-merge");
 const BaseConfig = require("./webpack.config.js");
 
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const devtool = "source-map"; // cheap-module-eval-source-map
 
 module.exports = Merge(BaseConfig, {
   mode: "production",
   plugins: [
-    new UglifyJSPlugin({
-      uglifyOptions: {
-        mangle: {
-          safari10: true
-        }
-      },
+    new TerserPlugin({
       sourceMap: !!devtool
     })
   ]

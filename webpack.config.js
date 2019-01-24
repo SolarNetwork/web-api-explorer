@@ -1,5 +1,4 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require("webpack");
 const path = require("path");
 
 const devtool = "source-map"; // cheap-module-eval-source-map
@@ -45,9 +44,6 @@ const config = {
                   debug: true
                 }
               ]
-            ],
-            plugins: [
-              //              require('babel-plugin-transform-runtime'),
             ]
           }
         }
@@ -56,12 +52,11 @@ const config = {
         test: /\.css$/,
         use: [
           {
-            loader: "style-loader",
+            loader: "style-loader/url",
             options: { sourceMap: false }
           },
           {
-            loader: "css-loader",
-            options: { sourceMap: false }
+            loader: "file-loader?name=assets/[name].[ext]"
           }
         ]
       },
