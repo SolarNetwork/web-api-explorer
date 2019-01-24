@@ -4,6 +4,7 @@
 
 import $ from "jquery";
 import { Configuration, urlQuery } from "solarnetwork-api-core";
+import Hex from "crypto-js/enc-hex";
 
 import Credentials from "./credentials";
 import Explorer from "./explorer";
@@ -78,29 +79,54 @@ var samplerApp = function(options) {
       histEl = histSelect.get(0),
       histItem,
       displayPath,
-      i;
+      i,
+      path = explore.servicePath;
 
     // don't add duplicate items
     for (i = 0; i < histEl.childElementCount; i += 1) {
       histItem = histEl.children.item(i);
-      if (histItem.value === explore.path) {
+      if (histItem.value === path) {
         return;
       }
     }
 
-    displayPath = explore.path;
+    displayPath = path;
     if (displayPath.length > config.maxHistoryItemDisplayLength) {
       displayPath = displayPath.substr(0, config.maxHistoryItemDisplayLength) + "\u2026";
     }
-    histItem = new Option(displayPath, explore.path);
+    histItem = new Option(displayPath, path);
     histItem.dataset["authType"] = explore.authType;
     histItem.dataset["method"] = explore.method;
     histItem.dataset["output"] = explore.output;
-    histItem.dataset["upload"] = explore.upload;
+    if (explore.upload) {
+      histItem.dataset["upload"] = explore.upload;
+    }
     histEl.add(histItem, 1);
     while (histEl.children.length > 51) {
       histEl.remove(51);
     }
+  }
+
+  function handleHistory(item) {
+    var formEl = item.form,
+      form = $(formEl),
+      path = item.value,
+      histItem = item.options[item.selectedIndex],
+      authType = histItem.dataset["authType"],
+      method = histItem.dataset["method"],
+      output = histItem.dataset["output"],
+      upload = histItem.dataset["upload"];
+    if (histItem.value.length < 1) {
+      return;
+    }
+    form.find("input[name=useAuth]").removeAttr("checked");
+    form.find("input[name=useAuth][value=" + authType + "]").trigger("click");
+    formEl.elements["path"].value = path;
+    form.find("input[name=method]").removeAttr("checked");
+    form.find("input[name=method][value=" + method + "]").trigger("click");
+    form.find("input[name=output]").removeAttr("checked");
+    form.find("input[name=output][value=" + output + "]").trigger("click");
+    formEl.elements["upload"].value = upload || "";
   }
 
   function formatXml(xml) {
@@ -177,12 +203,29 @@ var samplerApp = function(options) {
     jForm.find("input[name=method][value=" + method + "]").trigger("click");
   }
 
+  function showAuthSupport(explore) {
+    if (!explore.isAuthRequired()) {
+      return;
+    }
+
+    var authBuilder = explore.authV2Builder();
+    var sortedHeaderNames = authBuilder.canonicalHeaderNames();
+    var canonicalReq = authBuilder.computeCanonicalRequestData(sortedHeaderNames);
+    var signatureData = authBuilder.computeSignatureData(canonicalReq);
+
+    $("#auth-header").text("Authorization: " + authBuilder.buildWithSavedKey());
+    $("#req-message").text(canonicalReq);
+    $("#auth-message").text(signatureData);
+    $("#sign-key").text(Hex.stringify(authBuilder.signingKey));
+    $("#curl-command").text(explore.curl());
+  }
+
   function handleSamplerFormSubmit(form) {
     var creds = new Credentials(document.getElementById("credentials"));
     var explore = new Explorer(creds, form);
 
     // show some developer info in the auth-message area
-    // TODO showAuthSupport(params);
+    showAuthSupport(explore);
 
     $("#result").empty();
 
@@ -216,6 +259,12 @@ var samplerApp = function(options) {
     $("#shortcuts").on("change", function(event) {
       event.preventDefault();
       handleShortcut(this);
+    });
+
+    // handle history menu
+    $("#history").on("change", function(event) {
+      event.preventDefault();
+      handleHistory(this);
     });
 
     // handle toggling the auth-support pane

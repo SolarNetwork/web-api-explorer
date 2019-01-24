@@ -1,5 +1,11 @@
 import $ from "jquery";
-import { AuthorizationV2Builder, Environment, HttpHeaders } from "solarnetwork-api-core";
+import {
+  AuthorizationV2Builder,
+  HttpContentType,
+  HttpHeaders,
+  HttpMethod,
+  urlQueryParse
+} from "solarnetwork-api-core";
 
 export default class Explorer {
   /**
@@ -16,22 +22,24 @@ export default class Explorer {
       this.authType = jForm.find("input[name=useAuth]:checked").val();
       this.method = jForm.find("input[name=method]:checked").val();
       this.output = jForm.find("input[name=output]:checked").val();
-      this.path = form.elements["path"].value;
-      if (this.method === "POST" || this.method === "PUT" || this.method === "PATCH") {
-        this.data = jForm.find("textarea[name=upload]").val();
+      this._path = form.elements["path"].value;
+      this.path = this._path;
+      if (this.supportsContent) {
+        this.upload = jForm.find("textarea[name=upload]").val();
+        this.data = this.upload;
         if (this.data.length < 1) {
           // move any parameters into post body
           var a = document.createElement("a");
-          a.href = params.path;
+          a.href = this.path;
           this.path = a.pathname;
           this.data = a.search;
           if (this.data.indexOf("?") === 0) {
-            this.data = params.data.substring(1);
+            this.data = this.data.substring(1);
           }
-          this.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+          this.contentType = HttpContentType.FORM_URLENCODED_UTF8;
         } else {
           // assume content type is json if post body provided
-          this.contentType = "application/json; charset=UTF-8";
+          this.contentType = HttpContentType.APPLICATION_JSON_UTF8;
         }
         if (this.data !== undefined && this.data.length < 1) {
           delete this.data;
@@ -39,6 +47,18 @@ export default class Explorer {
         }
       }
     }
+  }
+
+  get servicePath() {
+    return this._path;
+  }
+
+  get supportsContent() {
+    return this.method === HttpMethod.POST ||
+      this.method === HttpMethod.PUT ||
+      this.method === HttpMethod.PATCH
+      ? true
+      : false;
   }
 
   get url() {
@@ -52,29 +72,68 @@ export default class Explorer {
     return url;
   }
 
+  set contentType(contentType) {
+    this._contentType = contentType;
+  }
+
+  /**
+   * Get the request content type.
+   *
+   * @returns {string} the content type, or `undefined` if the request does not support content or has none
+   */
+  get contentType() {
+    var cType = undefined;
+    if (this.supportsContent && this.data) {
+      cType = this._contentType ? this._contentType : HttpContentType.FORM_URLENCODED_UTF8;
+    }
+    return cType;
+  }
+
   /**
    * Test if authorization is required.
    *
    * @returns {Boolean} `true` if authorization is being used
    */
   isAuthRequired() {
-    return this.authType > 0 ? true : false;
+    return this.authType > 0;
   }
 
+  /**
+   * Test if a content digest should be included in the request.
+   *
+   * @returns {Boolean} `true` if a content digest should be included
+   */
   shouldIncludeContentDigest() {
     // we don't send Content-MD5/Digest for form data, because server treats this as URL parameters
-    return this.contentType && this.contentType.indexOf("application/x-www-form-urlencoded") < 0;
+    const contentType = this.contentType;
+    return contentType && contentType.indexOf(HttpContentType.FORM_URLENCODED) < 0;
   }
 
-  handleAuthV2(xhr) {
+  /**
+   * Create a new `AuthorizationV2Builder` from this explorer, configured with the request details.
+   *
+   * @returns {AuthorizationV2Builder}
+   */
+  authV2Builder() {
     var authBuilder = new AuthorizationV2Builder(this.creds.token, this.env);
-    authBuilder
-      .url(this.url)
+    var contentType = this.contentType;
+    var url = this.url;
+    if (contentType && contentType.indexOf(HttpContentType.FORM_URLENCODED) >= 0) {
+      url += "?" + this.data;
+    }
+    return authBuilder
+      .method(this.method)
+      .url(url)
+      .contentType(contentType)
       .snDate(true)
       .date(this.creds.date)
       .saveSigningKey(this.creds.secret);
+  }
 
-    if (this.data && this.shouldIncludeContentDigest()) {
+  handleAuthV2(xhr) {
+    var authBuilder = this.authV2Builder();
+
+    if (this.data && this.method !== HttpMethod.GET && this.shouldIncludeContentDigest()) {
       authBuilder.computeContentDigest(this.data);
       xhr.setRequestHeader("Digest", authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST));
     }
@@ -83,12 +142,41 @@ export default class Explorer {
     xhr.setRequestHeader(HttpHeaders.AUTHORIZATION, authBuilder.buildWithSavedKey());
   }
 
+  /**
+   * Get a `curl` command for the configured request.
+   *
+   * @returns {string} the `curl` command
+   */
+  curl() {
+    var authBuilder = this.authV2Builder();
+    var curl =
+      "curl " +
+      "-H 'Accept: " +
+      (this.output === "xml"
+        ? "text/xml"
+        : this.output === "csv"
+        ? "text/csv"
+        : "application/json") +
+      "'";
+    if (this.isAuthRequired()) {
+      curl += " -H 'X-SN-Date: " + this.creds.date.toUTCString() + "'";
+      curl += " -H 'Authorization: " + authBuilder.buildWithSavedKey() + "'";
+    }
+    if (this.data && this.method !== HttpMethod.GET) {
+      curl += " -H 'Content-Type: " + this.contentType + "' -d '" + this.data + "'";
+    }
+    if (this.data && this.method !== HttpMethod.GET && this.shouldIncludeContentDigest()) {
+      curl +=
+        " -H 'Digest " +
+        authBuilder.computeContentDigest(this.data).httpHeaders.firstValue(HttpHeaders.DIGEST) +
+        "'";
+    }
+    curl += " '" + this.url + "'";
+    return curl;
+  }
+
   submit() {
-    var me = this,
-      cType =
-        this.data && this.contentType === undefined
-          ? "application/x-www-form-urlencoded; charset=UTF-8"
-          : this.contentType;
+    var me = this;
     var accepts;
     var dType;
     if (this.output === "csv") {
@@ -107,7 +195,7 @@ export default class Explorer {
       accepts: accepts,
       dataType: dType,
       data: this.data,
-      contentType: cType,
+      contentType: this.contentType,
       beforeSend: function(xhr) {
         if (!me.isAuthRequired()) {
           return;
