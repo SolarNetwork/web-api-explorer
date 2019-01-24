@@ -1,0 +1,53 @@
+body {
+  margin-top: 4px;
+}
+
+label {
+  font-weight: bold;
+}
+
+label.radio {
+  font-weight: normal;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+/*
+#auth-result-toggle {
+  font-weight: 12px;
+  margin-left: -10px;
+  margin-right: 8px;
+}
+*/
+
+ol.linenums {
+  margin: 0;
+}
+
+h4 > svg {
+  width: 15px !important;
+  margin-left: -15px;
+  margin-right: 5px;
+}
+
+.activator:not(.active) > .activateable.active {
+  display: none;
+}
+
+.activator.active > .activateable.inactive {
+  display: none;
+}
+
+.activator:not(.active) + .activateable.active {
+  display: none;
+}
+
+.activator.active + .activateable.inactive {
+  display: none;
+}
