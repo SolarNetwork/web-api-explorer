@@ -1,4 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./vendor/prettify.css";
+import "./vendor/desert.css";
+import "./vendor/prettify.js";
 import "./sampler.css";
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";

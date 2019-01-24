@@ -1,8 +1,10 @@
 /* eslint-env es6, browser, commonjs */
+/* global PR */
 "use strict";
 
 import $ from "jquery";
 import { Configuration, urlQuery } from "solarnetwork-api-core";
+
 import Credentials from "./credentials";
 import Explorer from "./explorer";
 
@@ -16,11 +18,12 @@ var app;
  */
 var samplerApp = function(options) {
   const self = { version: "1.0.0" };
-  const config =
-    options ||
+  const config = Object.assign(
     {
-      // TODO
-    };
+      maxHistoryItemDisplayLength: 100
+    },
+    options
+  );
 
   function start() {
     // TODO
@@ -62,6 +65,41 @@ var samplerApp = function(options) {
       $("#upload").show();
     } else {
       $("#upload").hide();
+    }
+  }
+
+  /**
+   * Add a history item to the history menu.
+   *
+   * @param {Explorer} explore
+   */
+  function addHistoryItem(explore) {
+    var histSelect = $("#history"),
+      histEl = histSelect.get(0),
+      histItem,
+      displayPath,
+      i;
+
+    // don't add duplicate items
+    for (i = 0; i < histEl.childElementCount; i += 1) {
+      histItem = histEl.children.item(i);
+      if (histItem.value === explore.path) {
+        return;
+      }
+    }
+
+    displayPath = explore.path;
+    if (displayPath.length > config.maxHistoryItemDisplayLength) {
+      displayPath = displayPath.substr(0, config.maxHistoryItemDisplayLength) + "\u2026";
+    }
+    histItem = new Option(displayPath, explore.path);
+    histItem.dataset["authType"] = explore.authType;
+    histItem.dataset["method"] = explore.method;
+    histItem.dataset["output"] = explore.output;
+    histItem.dataset["upload"] = explore.upload;
+    histEl.add(histItem, 1);
+    while (histEl.children.length > 51) {
+      histEl.remove(51);
     }
   }
 
@@ -114,6 +152,12 @@ var samplerApp = function(options) {
     return result;
   }
 
+  function showResult(msg) {
+    var el = $("#result");
+    el.text(msg).removeClass("prettyprinted");
+    PR.prettyPrint(el.get(0));
+  }
+
   function handleShortcut(select) {
     var form = select.form,
       jForm = $(form),
@@ -137,29 +181,22 @@ var samplerApp = function(options) {
     var creds = new Credentials(document.getElementById("credentials"));
     var explore = new Explorer(creds, form);
 
-    /* TODO
     // show some developer info in the auth-message area
-    showAuthSupport(params);
+    // TODO showAuthSupport(params);
 
     $("#result").empty();
 
     // make HTTP request and show the results
-    SNAPI.request(
-      params.host + params.path,
-      params.output,
-      params.method,
-      params.data,
-      params.contentType
-    )
+    explore
+      .submit()
       .done(function(data, status, xhr) {
-        showResult(textForDisplay(xhr, params.output));
-        addHistoryItem(params);
+        showResult(textForDisplay(xhr, explore.output));
+        addHistoryItem(explore);
       })
       .fail(function(xhr, status, reason) {
-        showResult(textForDisplay(xhr, params.output));
+        showResult(textForDisplay(xhr, explore.output));
         alert(reason + ": " + status + " (" + xhr.status + ")");
       });
-    */
   }
 
   function init() {

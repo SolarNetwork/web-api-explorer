@@ -21,6 +21,10 @@ const config = {
   module: {
     rules: [
       {
+        test: /prettify\.js/,
+        use: "exports-loader?PR"
+      },
+      {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {

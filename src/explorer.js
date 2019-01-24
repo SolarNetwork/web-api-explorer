@@ -41,6 +41,17 @@ export default class Explorer {
     }
   }
 
+  get url() {
+    var protocol = this.env.protocol,
+      port = this.env.port,
+      url = protocol + "://" + this.env.host;
+    if (port && ((protocol === "https" && port !== 443) || (protocol === "http" && port !== 80))) {
+      url += ":" + port;
+    }
+    url += this.path;
+    return url;
+  }
+
   /**
    * Test if authorization is required.
    *
@@ -58,7 +69,7 @@ export default class Explorer {
   handleAuthV2(xhr) {
     var authBuilder = new AuthorizationV2Builder(this.creds.token, this.env);
     authBuilder
-      .path(this.path)
+      .url(this.url)
       .snDate(true)
       .date(this.creds.date)
       .saveSigningKey(this.creds.secret);
@@ -68,15 +79,16 @@ export default class Explorer {
       xhr.setRequestHeader("Digest", authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST));
     }
 
-    xhr.setRequestHeader(HttpHeaders.X_SN_DATE, auth.requestDateHeaderValue);
-    xhr.setRequestHeader(HttpHeaders.AUTHORIZATION, auth.buildWithSavedKey());
+    xhr.setRequestHeader(HttpHeaders.X_SN_DATE, authBuilder.requestDateHeaderValue);
+    xhr.setRequestHeader(HttpHeaders.AUTHORIZATION, authBuilder.buildWithSavedKey());
   }
 
   submit() {
-    var cType =
-      this.data && this.contentType === undefined
-        ? "application/x-www-form-urlencoded; charset=UTF-8"
-        : this.contentType;
+    var me = this,
+      cType =
+        this.data && this.contentType === undefined
+          ? "application/x-www-form-urlencoded; charset=UTF-8"
+          : this.contentType;
     var accepts;
     var dType;
     if (this.output === "csv") {
@@ -97,12 +109,12 @@ export default class Explorer {
       data: this.data,
       contentType: cType,
       beforeSend: function(xhr) {
-        if (!isAuthRequired()) {
+        if (!me.isAuthRequired()) {
           return;
         }
 
-        if (this.authType == 2) {
-          handleAuthV2(xhr);
+        if (me.authType == 2) {
+          me.handleAuthV2(xhr);
         }
       }
     });
