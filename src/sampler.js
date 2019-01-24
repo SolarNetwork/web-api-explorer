@@ -164,13 +164,11 @@ var samplerApp = function(options) {
     var result = "";
     if (xhr.status >= 400 && xhr.status < 500) {
       result = "Unauthorized.";
-    } else if (xhr.responseXML !== undefined) {
-      result = $("<div/>")
-        .text(formatXml(xhr.responseText))
-        .html();
     } else if (xhr.responseText) {
       if (output === "json") {
         result = JSON.stringify(JSON.parse(xhr.responseText), null, 2);
+      } else if (output === "xml") {
+        result = formatXml(xhr.responseText);
       } else {
         result = xhr.responseText;
       }
