@@ -2,13 +2,11 @@
 
 This project contains a webapp that helps you explore the SolarNetwork web API.
 
-![screenshot](docs/solarnetwork-web-api-sampler.png)
+![screenshot](docs/solarnetwork-web-api-explorer.png)
 
 # Use
 
-TODO
-
-Fill in a valid SolarNetwork security token and secret.
+Fill in a valid SolarNetwork security token and secret, then start exploring!
 
 # Building
 
