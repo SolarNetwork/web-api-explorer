@@ -61,7 +61,12 @@ export default class Explorer {
       : false;
   }
 
-  get url() {
+  /**
+   * The URL used for authorization.
+   *
+   * @type {String}
+   */
+  get authUrl() {
     var protocol = this.env.protocol,
       port = this.env.port,
       url = protocol + "://" + this.env.host;
@@ -70,6 +75,18 @@ export default class Explorer {
     }
     url += this.path;
     return url;
+  }
+
+  /**
+   * The URL used for the request, which may differ from `authUrl` if a proxy is used.
+   *
+   * @type {String}
+   */
+  get requestUrl() {
+    if (!this.creds.proxy) {
+      return this.authUrl;
+    }
+    return this.creds.proxy + this.path;
   }
 
   set contentType(contentType) {
@@ -117,7 +134,7 @@ export default class Explorer {
   authV2Builder() {
     var authBuilder = new AuthorizationV2Builder(this.creds.token, this.env);
     var contentType = this.contentType;
-    var url = this.url;
+    var url = this.authUrl;
     if (contentType && contentType.indexOf(HttpContentType.FORM_URLENCODED) >= 0) {
       url += "?" + this.data;
     }
@@ -171,7 +188,7 @@ export default class Explorer {
         authBuilder.computeContentDigest(this.data).httpHeaders.firstValue(HttpHeaders.DIGEST) +
         "'";
     }
-    curl += " '" + this.url + "'";
+    curl += " '" + this.requestUrl + "'";
     return curl;
   }
 
@@ -191,7 +208,7 @@ export default class Explorer {
     }
     return $.ajax({
       type: this.method,
-      url: this.url,
+      url: this.requestUrl,
       accepts: accepts,
       dataType: dType,
       data: this.data,

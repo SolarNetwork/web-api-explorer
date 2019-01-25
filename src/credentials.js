@@ -16,6 +16,7 @@ export default class Credentials {
       } else {
         this.date = new Date();
       }
+      this.proxy = form.elements["proxy"].value;
     }
   }
 

@@ -1,4 +1,4 @@
-# SolarNetwork Web API Sampler
+# SolarNetwork Web API Explorer
 
 This project contains a webapp that helps you explore the SolarNetwork web API.
 
@@ -8,8 +8,7 @@ This project contains a webapp that helps you explore the SolarNetwork web API.
 
 TODO
 
-Fill in a valid SolarNetwork security token and secret. 
-
+Fill in a valid SolarNetwork security token and secret.
 
 # Building
 
@@ -46,7 +45,5 @@ yarn run build --config webpack.prod.js
 
 and the app will be built in the `dist` directory.
 
-
 [npm]: https://www.npmjs.com/
 [yarn]: https://yarnpkg.com/
-

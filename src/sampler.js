@@ -54,7 +54,6 @@ var samplerApp = function(options) {
       val = val.replace(/\/pub\//, "/sec/");
       $(credForm.elements["token"]).removeAttr("disabled");
       $(credForm.elements["secret"]).removeAttr("disabled");
-      $("#auth-result .V2").toggle(el.val() > 1);
       $("#auth-result").show();
     }
     form.elements["path"].value = val;
@@ -215,7 +214,6 @@ var samplerApp = function(options) {
     $("#req-message").text(canonicalReq);
     $("#auth-message").text(signatureData);
     $("#sign-key").text(Hex.stringify(authBuilder.signingKey));
-    $("#curl-command").text(explore.curl());
   }
 
   function handleSamplerFormSubmit(form) {
@@ -224,6 +222,8 @@ var samplerApp = function(options) {
 
     // show some developer info in the auth-message area
     showAuthSupport(explore);
+
+    $("#curl-command").text(explore.curl());
 
     $("#result").empty();
 
@@ -265,8 +265,8 @@ var samplerApp = function(options) {
       handleHistory(this);
     });
 
-    // handle toggling the auth-support pane
-    $("#auth-result-toggle").on("click", function(event) {
+    // handle toggling the auth-support/curl/etc pane
+    $(".clickable.activator").on("click", function(event) {
       $(this).toggleClass("active");
     });
 
