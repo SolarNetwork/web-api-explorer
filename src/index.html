@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>SolarNetwork API Explorer</title>
-    <link rel="stylesheet" href="assets/bootstrap.min.css" />
+    <!--link rel="stylesheet" href="assets/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/desert.css" />
     <link rel="stylesheet" href="assets/prettify.css" />
-    <link rel="stylesheet" href="assets/sampler.css" />
+    <link rel="stylesheet" href="assets/sampler.css" /-->
   </head>
   <body>
     <div class="container">
@@ -29,25 +29,45 @@
         <div class="col-md-3">
           <form id="credentials">
             <div class="form-group">
-              <label>Token</label>
-              <input class="form-control" type="text" name="token" value="a09sjds09wu9wjsd9uy2" />
-            </div>
-            <div class="form-group">
-              <label>Secret</label>
-              <input class="form-control" type="password" name="secret" value="" />
-            </div>
-            <div class="form-group">
-              <label>Host</label>
-              <input class="form-control" type="text" name="host" value="http://localhost:8680" />
-            </div>
-            <div class="form-group">
-              <label>Date</label>
+              <label class="col-form-label-sm">Token</label>
               <input
-                class="form-control"
+                class="form-control form-control-sm"
+                type="text"
+                name="token"
+                value="a09sjds09wu9wjsd9uy2"
+              />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label-sm">Secret</label>
+              <input class="form-control form-control-sm" type="password" name="secret" value="" />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label-sm">Host</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                name="host"
+                value="http://localhost:8680"
+              />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label-sm">Date</label>
+              <input
+                class="form-control form-control-sm"
                 type="text"
                 name="date"
                 value=""
                 placeholder="Leave blank for current date"
+              />
+            </div>
+            <div class="form-group">
+              <label class="col-form-label-sm">Proxy</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                name="proxy"
+                value=""
+                placeholder="e.g. https://query.solarnetwork.net"
               />
             </div>
           </form>
@@ -546,11 +566,11 @@
 
       <div class="row" id="auth-result">
         <div class="col">
-          <h4 id="auth-result-toggle" class="clickable activator">
+          <h5 id="auth-result-toggle" class="clickable activator">
             <i class="fa fa-caret-right activateable inactive"></i
             ><i class="fa fa-caret-down activateable active"></i>
             Auth Support
-          </h4>
+          </h5>
           <div id="auth-result-container" class="activateable active">
             <p>This shows the the computed HTTP <code>Authorization</code> header.</p>
             <pre id="auth-header" class="data"></pre>
@@ -566,7 +586,17 @@
             <h5>Signing key</h5>
             <p>This shows the key used to sign the message.</p>
             <pre id="sign-key" class="data"></pre>
-            <h5>Curl command</h5>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="curl-result">
+        <div class="col">
+          <h5 id="curl-result-toggle" class="clickable activator">
+            <i class="fa fa-caret-right activateable inactive"></i
+            ><i class="fa fa-caret-down activateable active"></i>
+            Curl command
+          </h5>
+          <div id="auth-result-container" class="activateable active">
             <p>This is a <code>curl</code> command to make the same HTTP request.</p>
             <pre id="curl-command" class="data"></pre>
           </div>
@@ -574,8 +604,8 @@
       </div>
       <div class="row">
         <div class="col">
-          <h4>Result</h4>
-          <pre id="result" class="prettyprint linenums"></pre>
+          <h5>Result</h5>
+          <pre id="result" class="prettyprint"></pre>
         </div>
       </div>
     </div>
