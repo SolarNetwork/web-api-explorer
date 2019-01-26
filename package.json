@@ -25,9 +25,6 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.6",
     "@fortawesome/free-solid-svg-icons": "^5.4.1",
     "bootstrap": "^4.2.1",
-    "d3-array": "^1.2.4",
-    "d3-request": "^1.0.5",
-    "d3-selection": "^1.1.0",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.6",
     "solarnetwork-api-core": "SolarNetwork/sn-api-core-js#develop"
