@@ -3,8 +3,7 @@ import {
   AuthorizationV2Builder,
   HttpContentType,
   HttpHeaders,
-  HttpMethod,
-  urlQueryParse
+  HttpMethod
 } from "solarnetwork-api-core";
 
 export default class Explorer {
@@ -179,15 +178,18 @@ export default class Explorer {
         : "application/json") +
       "'";
     if (this.isAuthRequired()) {
-      curl += " -H 'X-SN-Date: " + this.creds.date.toUTCString() + "'";
-      curl += " -H 'Authorization: " + authBuilder.buildWithSavedKey() + "'";
+      curl += " -H '" + HttpHeaders.X_SN_DATE + ": " + this.creds.date.toUTCString() + "'";
+      curl += " -H '" + HttpHeaders.AUTHORIZATION + ": " + authBuilder.buildWithSavedKey() + "'";
     }
     if (this.data && this.method !== HttpMethod.GET) {
-      curl += " -H 'Content-Type: " + this.contentType + "' -d '" + this.data + "'";
+      curl +=
+        " -H '" + HttpHeaders.CONTENT_TYPE + ": " + this.contentType + "' -d '" + this.data + "'";
     }
     if (this.data && this.method !== HttpMethod.GET && this.shouldIncludeContentDigest()) {
       curl +=
-        " -H 'Digest " +
+        " -H '" +
+        HttpHeaders.DIGEST +
+        ": " +
         authBuilder.computeContentDigest(this.data).httpHeaders.firstValue(HttpHeaders.DIGEST) +
         "'";
     }
