@@ -152,7 +152,10 @@ export default class Explorer {
 
     if (this.data && this.method !== HttpMethod.GET && this.shouldIncludeContentDigest()) {
       authBuilder.computeContentDigest(this.data);
-      xhr.setRequestHeader("Digest", authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST));
+      xhr.setRequestHeader(
+        HttpHeaders.DIGEST,
+        authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST)
+      );
     }
 
     xhr.setRequestHeader(HttpHeaders.X_SN_DATE, authBuilder.requestDateHeaderValue);
