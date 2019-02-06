@@ -1631,9 +1631,9 @@ d3-time-format@^2.0.5:
     d3-time "1"
 
 d3-time@1:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/d3-time/-/d3-time-1.0.10.tgz#8259dd71288d72eeacfd8de281c4bf5c7393053c"
-  integrity sha512-hF+NTLCaJHF/JqHN5hE8HVGAXPStEq6/omumPE/SxyHVrR7/qQxusFDo0t0c/44+sCGHthC7yNGFZIEgju0P8g==
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/d3-time/-/d3-time-1.0.11.tgz#1d831a3e25cd189eb256c17770a666368762bbce"
+  integrity sha512-Z3wpvhPLW4vEScGeIMUckDW7+3hWKOQfAWg/U7PlWBnQmeKQ00gCUsTtWSYulrKNA7ta8hJ+xXc6MHrMuITwEw==
 
 date-now@^0.1.4:
   version "0.1.4"
@@ -4548,9 +4548,9 @@ sockjs@0.3.19:
     uuid "^3.0.1"
 
 solarnetwork-api-core@^0.14.1:
-  version "0.14.1"
-  resolved "https://registry.yarnpkg.com/solarnetwork-api-core/-/solarnetwork-api-core-0.14.1.tgz#93d1b01913424f19ff0c52a96b9b66445e965632"
-  integrity sha512-N74IKKjXpS/qERTp0El1nPyJo5gIv6/Cnj3rezJs0WkYQ6yre03b3R88dWklwuWAGXdyToTb36+a1lvVG3hBYQ==
+  version "0.14.3"
+  resolved "https://registry.yarnpkg.com/solarnetwork-api-core/-/solarnetwork-api-core-0.14.3.tgz#53d05ac9caac9d04ad6d5ec456dc1c5c8556ef06"
+  integrity sha512-uQC2s5Rky/xntN52PXLXsGR0Gv9yjTrTxAcohG1A6V2+fAiukil18S9RO/xZS8Pwc2oQCnHfwOH7F6Nc82zvaA==
   dependencies:
     crypto-js "^3.1.9-1"
     d3-array "^1.2.1"
