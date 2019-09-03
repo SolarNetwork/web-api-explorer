@@ -52,8 +52,8 @@ const config = {
         test: /\.css$/,
         use: [
           {
-            loader: "style-loader/url",
-            options: { sourceMap: false }
+            loader: "style-loader",
+            options: { injectType: "linkTag" }
           },
           {
             loader: "file-loader?name=assets/[name].[ext]"
