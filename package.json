@@ -1,6 +1,6 @@
 {
   "name": "solarnetwork-web-api-sampler",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "SolarNetwork API explorer.",
   "keywords": [
     "solarnetwork",
@@ -9,8 +9,8 @@
   "homepage": "https://github.com/SolarNetwork/web-api-sampler",
   "license": "Apache-2.0",
   "author": {
-    "name": "Matt Magoffin",
-    "email": "matt@solarnetwork.net"
+    "name": "SolarNetwork Foundation",
+    "email": "code@solarnetwork.net"
   },
   "repository": {
     "type": "git",
