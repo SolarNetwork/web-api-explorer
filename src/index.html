@@ -81,10 +81,134 @@
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-2 col-form-label">Templates</label>
+              <label class="col-2 col-form-label">SolarQuery</label>
               <div class="col">
-                <select id="shortcuts" class="form-control">
+                <select id="shortcuts-solarquery" class="form-control shortcuts">
                   <option></option>
+                  <optgroup label="Authentication">
+                    <option value="/solarquery/api/v1/sec/auth-tokens/refresh/v2?date={YYYY-MM-DD}"
+                      >Refresh a V2 token</option
+                    >
+                  </optgroup>
+                  <optgroup label="Datum List">
+                    <option
+                      value="/solarquery/api/v1/sec/datum/mostRecent?nodeId={nodeId}&sourceIds={sourceId}"
+                      >Most recent datum</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      >Datum, default sort</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&sorts%5B0%5D.sortKey=created&sorts%5B0%5D.descending=true&offset=0&max=50"
+                      >Datum, sorted by date descending</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&sorts%5B0%5D.sortKey=created&sorts%5B1%5D.sortKey=source&offset=0&max=50"
+                      >Datum, sorted by date, source</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&sourceIds={sourceId}&aggregation=FiveMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      >Datum, by 5 minute</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=TenMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      >Datum, by 10 minute</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=FifteenMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      >Datum, by 15 minutes</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=ThirtyMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      >Datum, by 30 minutes</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Hour&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      >Datum, by hour</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=HourOfDay&dataPath={dataPath}"
+                      >Datum value, averaged by hour of day</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=SeasonalHourOfDay&dataPath={dataPath}"
+                      >Datum value, averaged seasonally by hour of day</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Day&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      >Datum, by day</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=DayOfWeek&dataPath={dataPath}"
+                      >Datum value, averaged by day of week</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=SeasonalDayOfWeek&dataPath={dataPath}"
+                      >Datum value, averaged seasonally by day of week</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Month&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      >Datum, by month</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=RunningTotal"
+                      >Datum, running total</option
+                    >
+                  </optgroup>
+                  <optgroup label="Datum Metadata">
+                    <option value="/solarquery/api/v1/sec/datum/meta/{nodeId}"
+                      >View all datum metadata</option
+                    >
+                    <option value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
+                      >View datum metadata for a specific source</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
+                      data-method="POST"
+                      >Add metadata for a specific source</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
+                      data-method="PUT"
+                      >Store metadata for a specific source</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
+                      data-method="DELETE"
+                      >Delete metadata for a specific source</option
+                    >
+                  </optgroup>
+                  <optgroup label="Datum Range">
+                    <option value="/solarquery/api/v1/sec/range/interval?nodeId={nodeId}"
+                      >Interval</option
+                    >
+                    <option value="/solarquery/api/v1/sec/range/sources?nodeId={nodeId}"
+                      >Sources</option
+                    >
+                  </optgroup>
+                  <optgroup label="Datum Reading">
+                    <option
+                      value="/solarquery/api/v1/sec/datum/reading?readingType=Difference&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
+                      >Difference</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/reading?readingType=DifferenceWithin&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
+                      >Difference within</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/reading?readingType=NearestDifference&tolerance=P1D&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
+                      >Nearest difference</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/reading?readingType=CalculatedAt&tolerance=P1D&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01"
+                      >Calculated at</option
+                    >
+                    <option
+                      value="/solarquery/api/v1/sec/datum/reading?readingType=CalcualtedAtDifference&tolerance=P1D&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
+                      >Calculated at difference</option
+                    >
+                  </optgroup>
                   <optgroup label="Location List">
                     <option
                       value="/solarquery/api/v1/sec/location?location.name={name}&location.country={country}&location.postalCode={postalCode}&location.timeZoneId={timeZoneId}"
@@ -97,16 +221,6 @@
                     <option
                       value="/solarquery/api/v1/sec/location/weather?location.country={country}&location.postalCode={postalCode}"
                       >Weather location search</option
-                    >
-                  </optgroup>
-                  <optgroup label="Location Datum Range">
-                    <option
-                      value="/solarquery/api/v1/sec/location/datum/interval?locationId={locationId}"
-                      >Interval</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/location/datum/sources?locationId={locationId}"
-                      >Sources</option
                     >
                   </optgroup>
                   <optgroup label="Location Datum List">
@@ -197,123 +311,14 @@
                       >Delete location metadata for a specific source</option
                     >
                   </optgroup>
-                  <optgroup label="Datum Range">
-                    <option value="/solarquery/api/v1/sec/range/interval?nodeId={nodeId}"
+                  <optgroup label="Location Datum Range">
+                    <option
+                      value="/solarquery/api/v1/sec/location/datum/interval?locationId={locationId}"
                       >Interval</option
                     >
-                    <option value="/solarquery/api/v1/sec/range/sources?nodeId={nodeId}"
+                    <option
+                      value="/solarquery/api/v1/sec/location/datum/sources?locationId={locationId}"
                       >Sources</option
-                    >
-                  </optgroup>
-                  <optgroup label="Datum List">
-                    <option
-                      value="/solarquery/api/v1/sec/datum/mostRecent?nodeId={nodeId}&sourceIds={sourceId}"
-                      >Most recent datum</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
-                      >Datum, default sort</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&sorts%5B0%5D.sortKey=created&sorts%5B0%5D.descending=true&offset=0&max=50"
-                      >Datum, sorted by date descending</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&sorts%5B0%5D.sortKey=created&sorts%5B1%5D.sortKey=source&offset=0&max=50"
-                      >Datum, sorted by date, source</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&sourceIds={sourceId}&aggregation=FiveMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
-                      >Datum, by 5 minute</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=TenMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
-                      >Datum, by 10 minute</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=FifteenMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
-                      >Datum, by 15 minutes</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=ThirtyMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
-                      >Datum, by 30 minutes</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Hour&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
-                      >Datum, by hour</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=HourOfDay&dataPath={dataPath}"
-                      >Datum value, averaged by hour of day</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=SeasonalHourOfDay&dataPath={dataPath}"
-                      >Datum value, averaged seasonally by hour of day</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Day&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
-                      >Datum, by day</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=DayOfWeek&dataPath={dataPath}"
-                      >Datum value, averaged by day of week</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=SeasonalDayOfWeek&dataPath={dataPath}"
-                      >Datum value, averaged seasonally by day of week</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Month&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
-                      >Datum, by month</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=RunningTotal"
-                      >Datum, running total</option
-                    >
-                  </optgroup>
-                  <optgroup label="Datum Reading">
-                    <option
-                      value="/solarquery/api/v1/sec/datum/reading?readingType=Difference&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
-                      >Difference</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/reading?readingType=DifferenceWithin&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
-                      >Difference within</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/reading?readingType=NearestDifference&tolerance=P1D&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
-                      >Nearest difference</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/reading?readingType=CalculatedAt&tolerance=P1D&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01"
-                      >Calculated at</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/reading?readingType=CalcualtedAtDifference&tolerance=P1D&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
-                      >Calculated at difference</option
-                    >
-                  </optgroup>
-                  <optgroup label="Datum Metadata">
-                    <option value="/solarquery/api/v1/sec/datum/meta/{nodeId}"
-                      >View all datum metadata</option
-                    >
-                    <option value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
-                      >View datum metadata for a specific source</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
-                      data-method="POST"
-                      >Add metadata for a specific source</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
-                      data-method="PUT"
-                      >Store metadata for a specific source</option
-                    >
-                    <option
-                      value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
-                      data-method="DELETE"
-                      >Delete metadata for a specific source</option
                     >
                   </optgroup>
                   <optgroup label="Node Metadata (read only)">
@@ -329,6 +334,14 @@
                       >View specific user metadata</option
                     >
                   </optgroup>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">SolarUser</label>
+              <div class="col">
+                <select id="shortcuts-solaruser" class="form-control shortcuts">
+                  <option></option>
                   <optgroup label="Authentication">
                     <option value="/solaruser/api/v1/sec/whoami">Verify authentication</option>
                   </optgroup>
@@ -368,12 +381,7 @@
                       >Update instructions state</option
                     >
                   </optgroup>
-                  <optgroup label="Auth tokens (read only)">
-                    <option value="/solarquery/api/v1/sec/auth-tokens/refresh/v2?date={YYYY-MM-DD}"
-                      >Refresh a V2 token</option
-                    >
-                  </optgroup>
-                  <optgroup label="Auth Tokens (read/write)">
+                  <optgroup label="Authentication Tokens (read/write)">
                     <option value="/solaruser/api/v1/sec/user/auth-tokens">List all tokens</option>
                     <option
                       value="/solaruser/api/v1/sec/user/auth-tokens/generate/{type:User|ReadNodeData}"

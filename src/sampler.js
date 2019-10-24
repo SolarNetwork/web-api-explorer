@@ -18,7 +18,7 @@ var app;
  * @param {Object} [options] optional configuration options
  */
 var samplerApp = function(options) {
-  const self = { version: "1.0.0" };
+  const self = { version: "1.1.0" };
   const config = Object.assign(
     {
       maxHistoryItemDisplayLength: 100
@@ -254,8 +254,12 @@ var samplerApp = function(options) {
     }
 
     // handle shortcuts menu
-    $("#shortcuts").on("change", function(event) {
+    $("select.shortcuts").on("change", function(event) {
       event.preventDefault();
+      var me = this;
+      $("select.shortcuts")
+        .not(me)
+        .prop("selectedIndex", 0);
       handleShortcut(this);
     });
 
