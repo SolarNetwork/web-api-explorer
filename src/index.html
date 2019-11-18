@@ -345,6 +345,105 @@
                   <optgroup label="Authentication">
                     <option value="/solaruser/api/v1/sec/whoami">Verify authentication</option>
                   </optgroup>
+                  <optgroup label="Authentication Tokens (read/write)">
+                    <option value="/solaruser/api/v1/sec/user/auth-tokens">List all tokens</option>
+                    <option
+                      value="/solaruser/api/v1/sec/user/auth-tokens/generate/{type:User|ReadNodeData}"
+                      data-method="POST"
+                      >Generate token</option
+                    >
+                    <option
+                      value="/solaruser/api/v1/sec/user/auth-tokens/{token}/status?status={status:Active|Disabled}"
+                      data-method="POST"
+                      >Update status</option
+                    >
+                    <option
+                      value="/solaruser/api/v1/sec/user/auth-tokens/{token}"
+                      data-method="DELETE"
+                      >Delete token</option
+                    >
+                    <option
+                      value="/solaruser/api/v1/sec/user/auth-tokens/{token}"
+                      data-method="PATCH"
+                      >Merge policy</option
+                    >
+                    <option value="/solaruser/api/v1/sec/user/auth-tokens/{token}" data-method="PUT"
+                      >Replace policy</option
+                    >
+                  </optgroup>
+                  <optgroup label="Datum auxillary records">
+                    <option
+                      value="/solaruser/api/v1/sec/datum/auxiliary?withoutTotalResultsCount=true&nodeIds={nodeIds}&sourceIds={sourceIds}&startDate={2019-01-01T00:00:00.000}&endDate={2019-01-02T00:00:00.000}"
+                      >List datum auxillary records</option
+                    >
+                    <option
+                      value="/solaruser/api/v1/sec/datum/auxiliary?type=Reset&nodeId={nodeId}&sourceId={sourceId}&date={2019-01-01T00:00:00.000}"
+                      >View single datum auxillary reset record</option
+                    >
+                    <option
+                      value="/solaruser/api/v1/sec/datum/auxiliary"
+                      data-method="POST"
+                      data-upload='{
+                        "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+                        "created": "2019-02-06 18:35:50.943Z",
+                        "nodeId": 123,
+                        "sourceId": "Foo",
+                        "type": "Reset",
+                        "notes": "Meter replaced.",
+                        "final": {
+                          "a": {
+                            "wattHours": 123456789
+                          }
+                        },
+                        "start": {
+                          "a": {
+                            "wattHours": 123
+                          }
+                        },
+                        "meta": {
+                          "m": {
+                            "foo": "bar"
+                          }
+                        }
+                    }'
+                      >Store datum auxillary record</option
+                    >
+                    <option
+                      value="/solaruser/api/v1/sec/datum/auxiliary/move"
+                      data-method="POST"
+                      data-upload='{
+                      "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+                      "from": {
+                        "created": 1393657200000,
+                        "nodeId": "11",
+                        "sourceId": "Main",
+                        "type": "Reset"
+                      },
+                      "to": {
+                        "created": 1551310811948,
+                        "nodeId": "123",
+                        "sourceId": "Foo",
+                        "type": "Reset",
+                        "final": {
+                          "a": {
+                            "wattHours": 12345
+                          }
+                        },
+                        "start": {
+                          "a": {
+                            "wattHours": "123"
+                          }
+                        }
+                      }
+                    }'
+                      >Move datum auxillary record</option
+                    >
+                    <option
+                      value="/solaruser/api/v1/sec/datum/auxiliary?type=Reset&nodeId={nodeId}&date={date}&sourceId={sourceId}"
+                      data-method="DELETE"
+                      >Delete datum auxillary record</option
+                    >
+                  </optgroup>
                   <optgroup label="Instructions">
                     <option
                       value="/solaruser/api/v1/sec/instr/add?topic=DisableOperationalModes&nodeIds={nodeIds}&parameters%5B0%5D.name=OpMode&parameters%5B0%5D.value=hyper"
@@ -379,32 +478,6 @@
                       value="/solaruser/api/v1/sec/instr/updateState?ids={instructionIds}&state={instructionState:(Received|Executing|Declined|Completed)}"
                       data-method="POST"
                       >Update instructions state</option
-                    >
-                  </optgroup>
-                  <optgroup label="Authentication Tokens (read/write)">
-                    <option value="/solaruser/api/v1/sec/user/auth-tokens">List all tokens</option>
-                    <option
-                      value="/solaruser/api/v1/sec/user/auth-tokens/generate/{type:User|ReadNodeData}"
-                      data-method="POST"
-                      >Generate token</option
-                    >
-                    <option
-                      value="/solaruser/api/v1/sec/user/auth-tokens/{token}/status?status={status:Active|Disabled}"
-                      data-method="POST"
-                      >Update status</option
-                    >
-                    <option
-                      value="/solaruser/api/v1/sec/user/auth-tokens/{token}"
-                      data-method="DELETE"
-                      >Delete token</option
-                    >
-                    <option
-                      value="/solaruser/api/v1/sec/user/auth-tokens/{token}"
-                      data-method="PATCH"
-                      >Merge policy</option
-                    >
-                    <option value="/solaruser/api/v1/sec/user/auth-tokens/{token}" data-method="PUT"
-                      >Replace policy</option
                     >
                   </optgroup>
                   <optgroup label="Node Metadata (read/write)">

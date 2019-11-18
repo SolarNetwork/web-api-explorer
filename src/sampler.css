@@ -17,6 +17,11 @@ label.radio {
   font-weight: normal;
 }
 
+textarea {
+  font-size: 12px !important;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
 .clickable {
   cursor: pointer;
 }

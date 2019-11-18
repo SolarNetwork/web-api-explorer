@@ -185,19 +185,24 @@ var samplerApp = function(options) {
     var form = select.form,
       jForm = $(form),
       val = select.value,
-      method;
-    if (
-      $(form)
-        .find("input[name=useAuth]:checked")
-        .val() === "0"
-    ) {
+      optEl,
+      method,
+      upload;
+    if (jForm.find("input[name=useAuth]:checked").val() === "0") {
       val = val.replace(/\/sec\//, "/pub/");
     }
     form.elements["path"].value = val;
-    method = $(select.options[select.selectedIndex]).data("method");
-    method = method || "GET";
+    optEl = $(select.options[select.selectedIndex]);
+    method = optEl.data("method") || "GET";
+    upload = optEl.data("upload") || "";
+    if (typeof upload !== "string") {
+      // render as pretty-printed JSON
+      upload = JSON.stringify(upload, undefined, "  ");
+    }
+
     jForm.find("input[name=method]").removeAttr("checked");
     jForm.find("input[name=method][value=" + method + "]").trigger("click");
+    jForm.find("textarea[name=upload]").val(upload);
   }
 
   function showAuthSupport(explore) {
