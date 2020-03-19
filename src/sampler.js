@@ -253,8 +253,13 @@ var samplerApp = function(options) {
       window.location.protocol.toLowerCase().indexOf("http") === 0 &&
       window.location.host.toLowerCase().indexOf("localhost") !== 0
     ) {
+      // if hosted on a .solarnetwork.net domain, default the Host input to 'data.solarnetwork.net'
       $("#credentials input[name=host]").val(
-        window.location.protocol + "//" + window.location.host
+        window.location.protocol +
+          "//" +
+          (window.location.host.indexOf(".solarnetwork.net") > 0
+            ? "data.solarnetwork.net"
+            : window.location.host)
       );
     }
 
