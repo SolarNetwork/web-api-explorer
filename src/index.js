@@ -3,6 +3,7 @@ import "./vendor/prettify.css";
 import "./vendor/desert.css";
 import "./vendor/prettify.js";
 import "./sampler.css";
+import "./favicon.png";
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import { faCaretDown, faCaretRight } from "@fortawesome/free-solid-svg-icons";
