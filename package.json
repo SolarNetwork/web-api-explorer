@@ -1,6 +1,6 @@
 {
   "name": "solarnetwork-web-api-sampler",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "SolarNetwork API explorer.",
   "keywords": [
     "solarnetwork",
@@ -27,7 +27,7 @@
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",
     "popper.js": "^1.16.0",
-    "solarnetwork-api-core": "^0.19.1"
+    "solarnetwork-api-core": "^0.20.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
