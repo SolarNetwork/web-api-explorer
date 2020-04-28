@@ -177,14 +177,7 @@ export default class Explorer {
         ? "text/csv"
         : "application/json") +
       "'";
-    if (this.isAuthRequired()) {
-      curl += " -H '" + HttpHeaders.X_SN_DATE + ": " + this.creds.date.toUTCString() + "'";
-      curl += " -H '" + HttpHeaders.AUTHORIZATION + ": " + authBuilder.buildWithSavedKey() + "'";
-    }
-    if (this.data && this.method !== HttpMethod.GET) {
-      curl +=
-        " -H '" + HttpHeaders.CONTENT_TYPE + ": " + this.contentType + "' -d '" + this.data + "'";
-    }
+
     if (this.data && this.method !== HttpMethod.GET && this.shouldIncludeContentDigest()) {
       curl +=
         " -H '" +
@@ -192,6 +185,15 @@ export default class Explorer {
         ": " +
         authBuilder.computeContentDigest(this.data).httpHeaders.firstValue(HttpHeaders.DIGEST) +
         "'";
+    }
+
+    if (this.isAuthRequired()) {
+      curl += " -H '" + HttpHeaders.X_SN_DATE + ": " + this.creds.date.toUTCString() + "'";
+      curl += " -H '" + HttpHeaders.AUTHORIZATION + ": " + authBuilder.buildWithSavedKey() + "'";
+    }
+    if (this.data && this.method !== HttpMethod.GET) {
+      curl +=
+        " -H '" + HttpHeaders.CONTENT_TYPE + ": " + this.contentType + "' -d '" + this.data + "'";
     }
     curl += " '" + this.requestUrl + "'";
     return curl;
