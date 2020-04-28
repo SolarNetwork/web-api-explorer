@@ -137,20 +137,23 @@ export default class Explorer {
     if (contentType && contentType.indexOf(HttpContentType.FORM_URLENCODED) >= 0) {
       url += "?" + this.data;
     }
-    return authBuilder
+    var authBuilder = authBuilder
       .method(this.method)
       .url(url)
       .contentType(contentType)
       .snDate(true)
       .date(this.creds.date)
       .saveSigningKey(this.creds.secret);
+    if (this.data && this.method !== HttpMethod.GET && this.shouldIncludeContentDigest()) {
+      authBuilder.computeContentDigest(this.data);
+    }
+    return authBuilder;
   }
 
   handleAuthV2(xhr) {
     var authBuilder = this.authV2Builder();
 
-    if (this.data && this.method !== HttpMethod.GET && this.shouldIncludeContentDigest()) {
-      authBuilder.computeContentDigest(this.data);
+    if (authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST)) {
       xhr.setRequestHeader(
         HttpHeaders.DIGEST,
         authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST)
@@ -178,12 +181,12 @@ export default class Explorer {
         : "application/json") +
       "'";
 
-    if (this.data && this.method !== HttpMethod.GET && this.shouldIncludeContentDigest()) {
+    if (authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST)) {
       curl +=
         " -H '" +
         HttpHeaders.DIGEST +
         ": " +
-        authBuilder.computeContentDigest(this.data).httpHeaders.firstValue(HttpHeaders.DIGEST) +
+        authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST) +
         "'";
     }
 
