@@ -161,11 +161,15 @@ var samplerApp = function(options) {
 
   function textForDisplay(xhr, output) {
     var result = "";
-    if (xhr.status >= 400 && xhr.status < 500) {
+    if (xhr.status >= 400 && xhr.status < 422) {
       result = "Unauthorized.";
     } else if (xhr.responseText) {
       if (output === "json") {
-        result = JSON.stringify(JSON.parse(xhr.responseText), null, 2);
+        try {
+          result = JSON.stringify(JSON.parse(xhr.responseText), null, 2);
+        } catch (e) {
+          result = xhr.responseText;
+        }
       } else if (output === "xml") {
         result = formatXml(xhr.responseText);
       } else {
