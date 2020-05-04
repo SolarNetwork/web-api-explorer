@@ -171,9 +171,8 @@ export default class Explorer {
    */
   curl() {
     var authBuilder = this.authV2Builder();
-    var curl =
-      "curl " +
-      "-H 'Accept: " +
+    var curl = "curl " + (this.method !== "GET" ? " -X " + this.method : "");
+    "-H 'Accept: " +
       (this.output === "xml"
         ? "text/xml"
         : this.output === "csv"
