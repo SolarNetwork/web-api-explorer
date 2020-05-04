@@ -228,6 +228,7 @@ var samplerApp = function(options) {
   function handleSamplerFormSubmit(form) {
     var creds = new Credentials(document.getElementById("credentials"));
     var explore = new Explorer(creds, form);
+    var curlOnly = document.getElementById("curl-only-checkbox").checked;
 
     // show some developer info in the auth-message area
     showAuthSupport(explore);
@@ -237,16 +238,18 @@ var samplerApp = function(options) {
     $("#result").empty();
 
     // make HTTP request and show the results
-    explore
-      .submit()
-      .done(function(data, status, xhr) {
-        showResult(textForDisplay(xhr, explore.output));
-        addHistoryItem(explore);
-      })
-      .fail(function(xhr, status, reason) {
-        showResult(textForDisplay(xhr, explore.output));
-        alert(reason + ": " + status + " (" + xhr.status + ")");
-      });
+    if (!curlOnly) {
+      explore
+        .submit()
+        .done(function(data, status, xhr) {
+          showResult(textForDisplay(xhr, explore.output));
+          addHistoryItem(explore);
+        })
+        .fail(function(xhr, status, reason) {
+          showResult(textForDisplay(xhr, explore.output));
+          alert(reason + ": " + status + " (" + xhr.status + ")");
+        });
+    }
   }
 
   function init() {

@@ -679,6 +679,19 @@
           </h5>
           <div id="auth-result-container" class="activateable active">
             <p>This is a <code>curl</code> command to make the same HTTP request.</p>
+            <form id="curl-only">
+              <div class="form-group form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  name="curlOnly"
+                  id="curl-only-checkbox"
+                />
+                <label class="form-check-label" for="curl-only-checkbox">No request</label>
+                — check this to only generate the <code>curl</code> command, without actually making
+                the request in the browser.
+              </div>
+            </form>
             <pre id="curl-command" class="data"></pre>
           </div>
         </div>
