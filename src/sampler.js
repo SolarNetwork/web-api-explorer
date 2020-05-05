@@ -3,7 +3,7 @@
 "use strict";
 
 import $ from "jquery";
-import { Configuration, urlQuery } from "solarnetwork-api-core";
+import { Configuration, iso8601Date, urlQuery } from "solarnetwork-api-core";
 import Hex from "crypto-js/enc-hex";
 
 import Credentials from "./credentials";
@@ -222,6 +222,7 @@ var samplerApp = function(options) {
     $("#auth-header").text("Authorization: " + authBuilder.buildWithSavedKey());
     $("#req-message").text(canonicalReq);
     $("#auth-message").text(signatureData);
+    $("#auth-sign-date").text(iso8601Date(authBuilder.requestDate));
     $("#sign-key").text(Hex.stringify(authBuilder.signingKey));
   }
 

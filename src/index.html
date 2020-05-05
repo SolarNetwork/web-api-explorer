@@ -653,19 +653,53 @@
             Auth Support
           </h5>
           <div id="auth-result-container" class="activateable active">
-            <p>This shows the the computed HTTP <code>Authorization</code> header.</p>
-            <pre id="auth-header" class="data"></pre>
-            <h5>Canonical request data</h5>
             <p>
-              This shows the raw request data that is hashed and included in the authorization
-              message.
+              This shows the the
+              <a
+                target="_blank"
+                href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-authentication-scheme-V2#signature-value"
+                >computed</a
+              >
+              HTTP <code>Authorization</code> header:
+            </p>
+            <pre id="auth-header" class="data"></pre>
+            <p>
+              The following sections detail the steps taken to generate the
+              <code>Authorization</code> header.
+            </p>
+            <h5>Canonical request message</h5>
+            <p>
+              This shows the
+              <a
+                target="_blank"
+                href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-authentication-scheme-V2#canonical-request-message"
+                >canonical request message</a
+              >
+              that is hashed and included in the authorization message:
             </p>
             <pre id="req-message" class="data"></pre>
-            <h5>Authorization message</h5>
-            <p>This shows the raw data that is hashed to form the authorization signature value.</p>
+            <h5>Signing message</h5>
+            <p>
+              This shows the
+              <a
+                target="_blank"
+                href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-authentication-scheme-V2#signing-message"
+                >signing message</a
+              >
+              that is hashed to form the authorization signature value:
+            </p>
             <pre id="auth-message" class="data"></pre>
             <h5>Signing key</h5>
-            <p>This shows the key used to sign the message.</p>
+            <p>
+              This shows the hex-encoded
+              <a
+                target="_blank"
+                href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-authentication-scheme-V2#signing-key"
+                >signing key</a
+              >
+              used to sign the message, derived from the token secret using a signing date value of
+              <code id="auth-sign-date">YYYYMMDD</code>:
+            </p>
             <pre id="sign-key" class="data"></pre>
           </div>
         </div>
@@ -678,7 +712,6 @@
             Curl command
           </h5>
           <div id="auth-result-container" class="activateable active">
-            <p>This is a <code>curl</code> command to make the same HTTP request.</p>
             <form id="curl-only">
               <div class="form-group form-check">
                 <input
@@ -692,6 +725,7 @@
                 the request in the browser.
               </div>
             </form>
+            <p>This shows a <code>curl</code> command to make the same HTTP request:</p>
             <div class="row">
               <div class="col-sm-11">
                 <pre id="curl-command" class="data"></pre>
