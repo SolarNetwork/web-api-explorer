@@ -6,11 +6,11 @@ import "./sampler.css";
 import "./favicon.png";
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import { faCaretDown, faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretRight, faCopy } from "@fortawesome/free-solid-svg-icons";
 
 import startApp from "./sampler.js";
 
-library.add(faCaretDown, faCaretRight);
+library.add(faCaretDown, faCaretRight, faCopy);
 dom.watch();
 
 if (!window.isLoaded) {

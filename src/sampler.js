@@ -252,6 +252,27 @@ var samplerApp = function(options) {
     }
   }
 
+  function copyCurl(e) {
+    var range,
+      selection = window.getSelection(),
+      curlEl = document.getElementById("curl-command");
+
+    if (!(curlEl && curlEl.firstChild)) {
+      return;
+    }
+
+    range = document.createRange();
+
+    // work around Firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=730257
+    // where `range.selectNodeContents(e.target);` adds 4 spaces to start of copied text
+    range.setStart(curlEl.firstChild, 0);
+    range.setEnd(curlEl.lastChild, curlEl.lastChild.textContent.length);
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+    document.execCommand("copy");
+  }
+
   function init() {
     // configure host to deployed hostname, unless file: or localhost
     if (
@@ -316,6 +337,9 @@ var samplerApp = function(options) {
       event.preventDefault();
       handleSamplerFormSubmit(this);
     });
+
+    // handle curl copy
+    $("#curl-copy-btn").on("click", copyCurl);
 
     return Object.defineProperties(self, {
       start: { value: start },
