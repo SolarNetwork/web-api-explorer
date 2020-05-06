@@ -231,6 +231,9 @@ var samplerApp = function(options) {
     var explore = new Explorer(creds, form);
     var curlOnly = document.getElementById("curl-only-checkbox").checked;
 
+    // allow leaving off the Digest header
+    explore.withoutDigestHeader = !document.getElementById("auth-with-digest").checked;
+
     // show some developer info in the auth-message area
     showAuthSupport(explore);
 
@@ -248,7 +251,7 @@ var samplerApp = function(options) {
         })
         .fail(function(xhr, status, reason) {
           showResult(textForDisplay(xhr, explore.output));
-          alert(reason + ": " + status + " (" + xhr.status + ")");
+          alert((reason ? reason : "Unknown error") + ": " + status + " (" + xhr.status + ")");
         });
     }
   }

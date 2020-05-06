@@ -653,6 +653,21 @@
             Auth Support
           </h5>
           <div id="auth-result-container" class="activateable active">
+            <form id="auth-options" class="form-control-plaintext">
+              <div
+                class="form-check form-check-inline"
+                title="Check to include a Digest header for PATCH/POST/PUT requests"
+              >
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  name="withDigest"
+                  id="auth-with-digest"
+                  checked
+                />
+                <label class="form-check-label" for="auth-with-digest">Digest header</label>
+              </div>
+            </form>
             <p>
               This shows the the
               <a

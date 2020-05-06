@@ -16,6 +16,7 @@ export default class Explorer {
   constructor(creds, form) {
     this.creds = creds;
     this.env = creds.getEnvironment();
+    this._withoutDigestHeader = false;
     if (form && form.elements) {
       var jForm = $(form);
       this.authType = jForm.find("input[name=useAuth]:checked").val();
@@ -88,6 +89,24 @@ export default class Explorer {
     return this.creds.proxy + this.path;
   }
 
+  /**
+   * Get the "without Digest header" flag.
+   *
+   * @type {Boolean}
+   */
+  get withoutDigestHeader() {
+    return this._withoutDigestHeader;
+  }
+
+  /**
+   * Set the "without Digest header" flag.
+   *
+   * @param {Boolean} val `true` to omit the HTTP `Digest` header when body content is posted
+   */
+  set withoutDigestHeader(val) {
+    this._withoutDigestHeader = !!val;
+  }
+
   set contentType(contentType) {
     this._contentType = contentType;
   }
@@ -146,6 +165,9 @@ export default class Explorer {
       .saveSigningKey(this.creds.secret);
     if (this.data && this.method !== HttpMethod.GET && this.shouldIncludeContentDigest()) {
       authBuilder.computeContentDigest(this.data);
+    }
+    if (this.withoutDigestHeader) {
+      authBuilder.httpHeaders.remove("Digest");
     }
     return authBuilder;
   }
