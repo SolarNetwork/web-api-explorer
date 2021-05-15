@@ -179,10 +179,12 @@ var samplerApp = function(options) {
     return result;
   }
 
-  function showResult(msg) {
+  function showResult(msg, highlight) {
     var el = $("#result");
     el.text(msg).removeClass("prettyprinted");
-    PR.prettyPrint(el.get(0));
+    if (highlight) {
+      PR.prettyPrint(el.get(0));
+    }
   }
 
   function handleShortcut(select) {
@@ -246,7 +248,8 @@ var samplerApp = function(options) {
       explore
         .submit()
         .done(function(data, status, xhr) {
-          showResult(textForDisplay(xhr, explore.output));
+          var highlight = !!form.elements["highlight"].checked;
+          showResult(textForDisplay(xhr, explore.output), highlight);
           addHistoryItem(explore);
         })
         .fail(function(xhr, status, reason) {

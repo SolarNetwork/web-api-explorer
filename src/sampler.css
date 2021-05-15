@@ -75,6 +75,10 @@ pre.data {
   border-radius: 4px;
 }
 
+pre.prettyprint {
+  color: #dedede;
+}
+
 #result {
   border-radius: 4px;
   overflow-x: visible;
