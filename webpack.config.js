@@ -22,7 +22,12 @@ const config = {
     rules: [
       {
         test: /prettify\.js/,
-        use: "exports-loader?PR"
+        use: {
+          loader: "exports-loader",
+          options: {
+            exports: "default PR"
+          }
+        }
       },
       {
         test: /\.js$/,
@@ -42,7 +47,8 @@ const config = {
                   },
                   modules: false,
                   useBuiltIns: "entry",
-                  debug: true
+                  corejs: "3.11",
+                  debug: false
                 }
               ]
             ]
