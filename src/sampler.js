@@ -17,14 +17,15 @@ var app;
  * @class
  * @param {Object} [options] optional configuration options
  */
-var samplerApp = function(options) {
+var samplerApp = function (options) {
   const self = { version: "1.1.0" };
   const config = Object.assign(
     {
-      maxHistoryItemDisplayLength: 100
+      maxHistoryItemDisplayLength: 100,
     },
     options
   );
+  var helpWindow;
 
   function start() {
     // TODO
@@ -133,7 +134,7 @@ var samplerApp = function(options) {
     var reg = /(>)(<)(\/*)/g;
     xml = xml.replace(reg, "$1\r\n$2$3");
     var pad = 0;
-    $.each(xml.split("\r\n"), function(index, node) {
+    $.each(xml.split("\r\n"), function (index, node) {
       var indent = 0;
       if (node.match(/.+<\/\w[^>]*>$/)) {
         indent = 0;
@@ -191,9 +192,12 @@ var samplerApp = function(options) {
     var form = select.form,
       jForm = $(form),
       val = select.value,
+      appName = select.dataset["app"],
       optEl,
       method,
-      upload;
+      upload,
+      docs,
+      helpLink;
     if (jForm.find("input[name=useAuth]:checked").val() === "0") {
       val = val.replace(/\/sec\//, "/pub/");
     }
@@ -201,6 +205,7 @@ var samplerApp = function(options) {
     optEl = $(select.options[select.selectedIndex]);
     method = optEl.data("method") || "GET";
     upload = optEl.data("upload") || "";
+    docs = optEl.data("docs");
     if (typeof upload !== "string") {
       // render as pretty-printed JSON
       upload = JSON.stringify(upload, undefined, "  ");
@@ -209,6 +214,17 @@ var samplerApp = function(options) {
     jForm.find("input[name=method]").removeAttr("checked");
     jForm.find("input[name=method][value=" + method + "]").trigger("click");
     jForm.find("textarea[name=upload]").val(upload);
+
+    if (appName) {
+      if (docs && !docs.startsWith("http")) {
+        // assume a link to the wiki
+        docs = "https://github.com/SolarNetwork/solarnetwork/wiki/" + docs;
+      }
+      // TODO: toggle help link
+      helpLink = $("#" + appName + "-help")
+        .attr("data-doc-link", docs)
+        .prop("disabled", !docs);
+    }
   }
 
   function showAuthSupport(explore) {
@@ -247,12 +263,12 @@ var samplerApp = function(options) {
     if (!curlOnly) {
       explore
         .submit()
-        .done(function(data, status, xhr) {
+        .done(function (data, status, xhr) {
           var highlight = !!form.elements["highlight"].checked;
           showResult(textForDisplay(xhr, explore.output), highlight);
           addHistoryItem(explore);
         })
-        .fail(function(xhr, status, reason) {
+        .fail(function (xhr, status, reason) {
           showResult(textForDisplay(xhr, explore.output));
           alert((reason ? reason : "Unknown error") + ": " + status + " (" + xhr.status + ")");
         });
@@ -280,6 +296,18 @@ var samplerApp = function(options) {
     document.execCommand("copy");
   }
 
+  function showDocLink() {
+    var href = this.dataset.docLink;
+    if (href) {
+      if (!helpWindow || helpWindow.closed) {
+        helpWindow = window.open(href, "SolarNet-Help");
+      } else {
+        helpWindow.location = href;
+        helpWindow.focus();
+      }
+    }
+  }
+
   function init() {
     // configure host to deployed hostname, unless file: or localhost
     if (
@@ -299,29 +327,27 @@ var samplerApp = function(options) {
     }
 
     // handle shortcuts menu
-    $("select.shortcuts").on("change", function(event) {
+    $("select.shortcuts").on("change", function (event) {
       event.preventDefault();
       var me = this;
-      $("select.shortcuts")
-        .not(me)
-        .prop("selectedIndex", 0);
+      $("select.shortcuts").not(me).prop("selectedIndex", 0);
       handleShortcut(this);
     });
 
     // handle history menu
-    $("#history").on("change", function(event) {
+    $("#history").on("change", function (event) {
       event.preventDefault();
       handleHistory(this);
     });
 
     // handle toggling the auth-support/curl/etc pane
-    $(".clickable.activator").on("click", function(event) {
+    $(".clickable.activator").on("click", function (event) {
       $(this).toggleClass("active");
     });
 
     // when toggling auth on/off re-write API path for /pub <-> /sec
     $("input[name=useAuth]")
-      .on("change", function(event) {
+      .on("change", function (event) {
         event.preventDefault();
         setupForUseAuth.call(this);
       })
@@ -331,7 +357,7 @@ var samplerApp = function(options) {
 
     // when toggling between GET/POST/etc show/hide the upload textfield
     $("input[name=method]")
-      .on("change", function(event) {
+      .on("change", function (event) {
         event.preventDefault();
         setupForMethod.call(this);
       })
@@ -340,7 +366,7 @@ var samplerApp = function(options) {
       .each(setupForMethod);
 
     // handle sampler form submit
-    $("#sampler-form").on("submit", function(event) {
+    $("#sampler-form").on("submit", function (event) {
       event.preventDefault();
       handleSamplerFormSubmit(this);
     });
@@ -348,9 +374,12 @@ var samplerApp = function(options) {
     // handle curl copy
     $("#curl-copy-btn").on("click", copyCurl);
 
+    // handle doc link
+    $("button.doc-link").on("click", showDocLink);
+
     return Object.defineProperties(self, {
       start: { value: start },
-      stop: { value: stop }
+      stop: { value: stop },
     });
   }
 
@@ -369,7 +398,7 @@ export default function startApp() {
 
   app = samplerApp(config).start();
 
-  window.onbeforeunload = function() {
+  window.onbeforeunload = function () {
     app.stop();
   };
 

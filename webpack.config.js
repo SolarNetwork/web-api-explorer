@@ -9,13 +9,13 @@ const config = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "app.js",
-    sourceMapFilename: "[file].map"
+    sourceMapFilename: "[file].map",
   },
   devtool: devtool,
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    //contentBase: path.join(__dirname, "dist"),
     compress: false,
-    port: 9000
+    port: 9000,
   },
   mode: "development",
   module: {
@@ -25,9 +25,9 @@ const config = {
         use: {
           loader: "exports-loader",
           options: {
-            exports: "default PR"
-          }
-        }
+            exports: "default PR",
+          },
+        },
       },
       {
         test: /\.js$/,
@@ -43,43 +43,43 @@ const config = {
                   targets: {
                     browsers: ["> 5%"],
                     safari: "10.1",
-                    node: "current"
+                    node: "current",
                   },
                   modules: false,
                   useBuiltIns: "entry",
                   corejs: "3.11",
-                  debug: false
-                }
-              ]
-            ]
-          }
-        }
+                  debug: false,
+                },
+              ],
+            ],
+          },
+        },
       },
       {
         test: /\.css$/,
         use: [
           {
             loader: "style-loader",
-            options: { injectType: "linkTag" }
+            options: { injectType: "linkTag" },
           },
           {
-            loader: "file-loader?name=assets/[name].[ext]"
-          }
-        ]
+            loader: "file-loader?name=assets/[name].[ext]",
+          },
+        ],
       },
-      { test: /\.(gif|jpg|png)$/, use: "file-loader?name=assets/[name].[ext]" }
-    ]
+      { test: /\.(gif|jpg|png)$/, use: "file-loader?name=assets/[name].[ext]" },
+    ],
   },
   plugins: [
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(require("./package.json").version)
+      VERSION: JSON.stringify(require("./package.json").version),
     }),
-    new HtmlWebpackPlugin({ template: "./src/index.html" })
+    new HtmlWebpackPlugin({ template: "./src/index.html" }),
   ],
   resolve: {
     alias: {
-      "@fortawesome/fontawesome-free-solid$": "@fortawesome/fontawesome-free-solid/shakable.es.js"
-    }
-  }
+      "@fortawesome/fontawesome-free-solid$": "@fortawesome/fontawesome-free-solid/shakable.es.js",
+    },
+  },
 };
 module.exports = config;

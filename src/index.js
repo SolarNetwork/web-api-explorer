@@ -6,17 +6,17 @@ import "./sampler.css";
 import "./favicon.png";
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import { faCaretDown, faCaretRight, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretRight, faCircleInfo, faCopy } from "@fortawesome/free-solid-svg-icons";
 
 import startApp from "./sampler.js";
 
-library.add(faCaretDown, faCaretRight, faCopy);
+library.add(faCaretDown, faCaretRight, faCircleInfo, faCopy);
 dom.watch();
 
 if (!window.isLoaded) {
   window.addEventListener(
     "load",
-    function() {
+    function () {
       startApp();
     },
     false
