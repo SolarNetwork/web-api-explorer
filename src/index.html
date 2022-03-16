@@ -298,105 +298,132 @@
                   <optgroup label="Location Datum List">
                     <option
                       value="/solarquery/api/v1/sec/location/datum/mostRecent?locationId={locationId}&sourceIds={sourceId}"
+                      data-docs="SolarQuery-API#location-datum-most-recent"
                     >
                       Most recent location datum
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum, default sort
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&sorts%5B0%5D.sortKey=created&sorts%5B1%5D.sortKey=source&offset=0&max=50"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum, sorted by date, source
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=FiveMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum, by 5 minute
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=TenMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum, by 10 minute
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=FifteenMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum, by 15 minutes
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=ThirtyMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum, by 30 minutes
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Hour&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum, by hour
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=HourOfDay"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum value, averaged by hour of day
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=SeasonalHourOfDay"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum value, averaged seasonally by hour of day
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Day&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum, by day
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=DayOfWeek"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum value, averaged by day of week
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=SeasonalDayOfWeek"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum value, averaged seasonally by day of week
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Month&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum, by month
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=RunningTotal"
+                      data-docs="SolarQuery-API#location-datum-list"
                     >
                       Location datum, running total
                     </option>
                   </optgroup>
                   <optgroup label="Location Datum Metadata">
-                    <option value="/solarquery/api/v1/sec/location/meta?query={query}&tags={tag}">
+                    <option
+                      value="/solarquery/api/v1/sec/location/meta?query={query}&tags={tag}"
+                      data-docs="SolarQuery-API#find-location-datum-metadata"
+                    >
                       Find location datum metadata
                     </option>
-                    <option value="/solarquery/api/v1/sec/location/meta/{locationId}">
+                    <option
+                      value="/solarquery/api/v1/sec/location/meta/{locationId}"
+                      data-docs="SolarQuery-API#list-location-datum-metadata"
+                    >
                       View all location datum metadata
                     </option>
-                    <option value="/solarquery/api/v1/sec/location/meta/{locationId}/{sourceId}">
+                    <option
+                      value="/solarquery/api/v1/sec/location/meta/{locationId}/{sourceId}"
+                      data-docs="SolarQuery-API#get-location-datum-metadata"
+                    >
                       View location datum metadata for a specific source
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/meta/{locationId}/{sourceId}"
                       data-method="POST"
+                      data-docs="SolarQuery-API#add-location-datum-metadata"
                     >
                       Add location metadata for a specific source
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/meta/{locationId}/{sourceId}"
                       data-method="PUT"
+                      data-docs="SolarQuery-API#store-location-datum-metadata"
                     >
                       Store location metadata for a specific source
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/meta/{locationId}/{sourceId}"
                       data-method="DELETE"
+                      data-docs="SolarQuery-API#delete-location-datum-metadata"
                     >
                       Delete location metadata for a specific source
                     </option>
@@ -404,25 +431,36 @@
                   <optgroup label="Location Datum Range">
                     <option
                       value="/solarquery/api/v1/sec/location/datum/interval?locationId={locationId}"
+                      data-docs="SolarQuery-API#location-reportable-interval"
                     >
                       Interval
                     </option>
                     <option
                       value="/solarquery/api/v1/sec/location/datum/sources?locationId={locationId}"
+                      data-docs="SolarQuery-API#location-reportable-sources"
                     >
                       Sources
                     </option>
                   </optgroup>
                   <optgroup label="Node Metadata (read only)">
-                    <option value="/solarquery/api/v1/sec/nodes/meta/{nodeId}">
+                    <option
+                      value="/solarquery/api/v1/sec/nodes/meta/{nodeId}"
+                      data-docs="SolarQuery-API#node-metadata-view"
+                    >
                       View specific node metadata
                     </option>
-                    <option value="/solarquery/api/v1/sec/nodes/meta?nodeIds={nodeId}">
+                    <option
+                      value="/solarquery/api/v1/sec/nodes/meta?nodeIds={nodeId}"
+                      data-docs="SolarQuery-API#node-metadata-list"
+                    >
                       Find node metadata
                     </option>
                   </optgroup>
                   <optgroup label="User Metadata (read only)">
-                    <option value="/solarquery/api/v1/sec/users/meta/{userId}">
+                    <option
+                      value="/solarquery/api/v1/sec/users/meta/{userId}"
+                      data-docs="SolarQuery-API#user-metadata-view"
+                    >
                       View specific user metadata
                     </option>
                   </optgroup>
@@ -444,37 +482,66 @@
                 >
                   <option></option>
                   <optgroup label="Authentication">
-                    <option value="/solaruser/api/v1/sec/whoami">Verify authentication</option>
+                    <option
+                      value="/solaruser/api/v1/sec/whoami"
+                      data-docs="SolarUser-API#authentication-check"
+                    >
+                      Verify authentication
+                    </option>
                   </optgroup>
-                  <optgroup label="Authentication Tokens (read/write)">
-                    <option value="/solaruser/api/v1/sec/user/auth-tokens">List all tokens</option>
+                  <optgroup label="Security Tokens (read/write)">
+                    <option
+                      value="/solaruser/api/v1/sec/user/auth-tokens"
+                      data-docs="SolarUser-API#security-token-list"
+                    >
+                      List all tokens
+                    </option>
                     <option
                       value="/solaruser/api/v1/sec/user/auth-tokens/generate/{type:User|ReadNodeData}"
                       data-method="POST"
+                      data-docs="SolarUser-API#security-token-add"
                     >
                       Generate token
                     </option>
                     <option
-                      value="/solaruser/api/v1/sec/user/auth-tokens/{token}/status?status={status:Active|Disabled}"
+                      value="/solaruser/api/v1/sec/user/auth-tokens/status?tokenId={token}status={status:Active|Disabled}"
                       data-method="POST"
+                      data-docs="SolarUser-API#security-token-update-status"
                     >
                       Update status
                     </option>
                     <option
-                      value="/solaruser/api/v1/sec/user/auth-tokens/{token}"
+                      value="/solaruser/api/v1/sec/user/auth-tokens?tokenId={token}"
                       data-method="DELETE"
+                      data-docs="SolarUser-API#security-token-delete"
                     >
                       Delete token
                     </option>
                     <option
-                      value="/solaruser/api/v1/sec/user/auth-tokens/{token}"
+                      value="/solaruser/api/v1/sec/user/auth-tokens/policy?tokenId={token}"
                       data-method="PATCH"
+                      data-docs="SolarUser-API#security-token-policy-add"
+                      data-upload='{
+                        "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+                        "nodeIds": [1,2,3],
+                        "sourceIds": ["Foo","Bar"],
+                        "nodeMetadataPaths":["/pm/**"],
+                        "userMetadataPaths": ["/m/**"]
+                    }'
                     >
                       Merge policy
                     </option>
                     <option
-                      value="/solaruser/api/v1/sec/user/auth-tokens/{token}"
+                      value="/solaruser/api/v1/sec/user/auth-tokens/policy?tokenId={token}"
                       data-method="PUT"
+                      data-docs="SolarUser-API#security-token-policy-store"
+                      data-upload='{
+                        "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+                        "nodeIds": [1,2,3],
+                        "sourceIds": ["Foo","Bar"],
+                        "nodeMetadataPaths":["/pm/**"],
+                        "userMetadataPaths": ["/m/**"]
+                    }'
                     >
                       Replace policy
                     </option>
@@ -482,17 +549,20 @@
                   <optgroup label="Datum auxillary records">
                     <option
                       value="/solaruser/api/v1/sec/datum/auxiliary?withoutTotalResultsCount=true&nodeIds={nodeIds}&sourceIds={sourceIds}&startDate={2019-01-01T00:00:00.000}&endDate={2019-01-02T00:00:00.000}"
+                      data-docs="SolarUser-API#datum-auxiliary-list"
                     >
                       List datum auxillary records
                     </option>
                     <option
                       value="/solaruser/api/v1/sec/datum/auxiliary?type=Reset&nodeId={nodeId}&sourceId={sourceId}&date={2019-01-01T00:00:00.000}"
+                      data-docs="SolarUser-API#datum-auxiliary-view"
                     >
                       View single datum auxillary reset record
                     </option>
                     <option
                       value="/solaruser/api/v1/sec/datum/auxiliary"
                       data-method="POST"
+                      data-docs="SolarUser-API#datum-auxiliary-store"
                       data-upload='{
                         "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
                         "created": "2019-02-06 18:35:50.943Z",
@@ -522,6 +592,7 @@
                     <option
                       value="/solaruser/api/v1/sec/datum/auxiliary/move"
                       data-method="POST"
+                      data-docs="SolarUser-API#datum-auxiliary-move"
                       data-upload='{
                       "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
                       "from": {
@@ -553,6 +624,7 @@
                     <option
                       value="/solaruser/api/v1/sec/datum/auxiliary?type=Reset&nodeId={nodeId}&date={date}&sourceId={sourceId}"
                       data-method="DELETE"
+                      data-docs="SolarUser-API#datum-auxiliary-delete"
                     >
                       Delete datum auxillary record
                     </option>
@@ -561,39 +633,53 @@
                     <option
                       value="/solaruser/api/v1/sec/instr/add?topic=DisableOperationalModes&nodeIds={nodeIds}&parameters%5B0%5D.name=OpMode&parameters%5B0%5D.value=hyper"
                       data-method="POST"
+                      data-docs="SolarUser-API#queue-instruction"
                     >
                       Disable operational mode
                     </option>
                     <option
                       value="/solaruser/api/v1/sec/instr/add?topic=EnableOperationalModes&nodeIds={nodeIds}&parameters%5B0%5D.name=OpMode&parameters%5B0%5D.value=hyper"
                       data-method="POST"
+                      data-docs="SolarUser-API#queue-instruction"
                     >
                       Enable operational mode
                     </option>
                     <option
                       value="/solaruser/api/v1/sec/instr/add?topic=SetControlParameter&nodeIds={nodeIds}&parameters%5B0%5D.name={controlId}&parameters%5B0%5D.value={controlValue}"
                       data-method="POST"
+                      data-docs="SolarUser-API#queue-instruction"
                     >
                       Set control parameter
                     </option>
                     <option
                       value="/solaruser/api/v1/sec/instr/add?topic=UpdatePlatform&nodeIds={nodeIds}&parameters%5B0%5D.name=Version&parameters%5B0%5D.value=00001"
                       data-method="POST"
+                      data-docs="SolarUser-API#queue-instruction"
                     >
                       Update platform
                     </option>
-                    <option value="/solaruser/api/v1/sec/instr/viewActive?nodeIds={nodeIds}">
+                    <option
+                      value="/solaruser/api/v1/sec/instr/viewActive?nodeIds={nodeIds}"
+                      data-docs="SolarUser-API#view-active-instructions"
+                    >
                       View active instructions
                     </option>
-                    <option value="/solaruser/api/v1/sec/instr/viewPending?nodeIds={nodeIds}">
+                    <option
+                      value="/solaruser/api/v1/sec/instr/viewPending?nodeIds={nodeIds}"
+                      data-docs="SolarUser-API#view-pending-instructions"
+                    >
                       View pending instructions
                     </option>
-                    <option value="/solaruser/api/v1/sec/instr/view?ids={instructionIds}">
+                    <option
+                      value="/solaruser/api/v1/sec/instr/view?ids={instructionIds}"
+                      data-docs="SolarUser-API#view-instruction"
+                    >
                       View instructions
                     </option>
                     <option
                       value="/solaruser/api/v1/sec/instr/updateState?ids={instructionIds}&state={instructionState:(Received|Executing|Declined|Completed)}"
                       data-method="POST"
+                      data-docs="SolarUser-API#update-instruction-state"
                     >
                       Update instructions state
                     </option>
@@ -641,32 +727,32 @@
                     </option>
                   </optgroup>
                   <optgroup label="User Metadata (read/write)">
-                    <option value="/solaruser/api/v1/sec/users/meta">
+                    <option
+                      value="/solaruser/api/v1/sec/users/meta"
+                      data-docs="SolarUser-API#user-metadata-view"
+                    >
                       View acitve user metadata
                     </option>
-                    <option value="/solaruser/api/v1/sec/users/meta" data-method="POST">
+                    <option
+                      value="/solaruser/api/v1/sec/users/meta"
+                      data-method="POST"
+                      data-docs="SolarUser-API#user-metadata-add"
+                    >
                       Add metadata for acitve user
                     </option>
-                    <option value="/solaruser/api/v1/sec/users/meta" data-method="PUT">
+                    <option
+                      value="/solaruser/api/v1/sec/users/meta"
+                      data-method="PUT"
+                      data-docs="SolarUser-API#user-metadata-store"
+                    >
                       Store metadata for acitve user
                     </option>
-                    <option value="/solaruser/api/v1/sec/users/meta" data-method="DELETE">
+                    <option
+                      value="/solaruser/api/v1/sec/users/meta"
+                      data-method="DELETE"
+                      data-docs="SolarUser-API#user-metadata-delete"
+                    >
                       Delete metadata for acitve user
-                    </option>
-                    <option value="/solaruser/api/v1/sec/users/meta/{userId}">
-                      View specific user metadata
-                    </option>
-                    <option value="/solaruser/api/v1/sec/users/meta?userIds={userId}">
-                      Find user metadata
-                    </option>
-                    <option value="/solaruser/api/v1/sec/users/meta/{userId}" data-method="POST">
-                      Add metadata for a specific user
-                    </option>
-                    <option value="/solaruser/api/v1/sec/users/meta/{userId}" data-method="PUT">
-                      Store metadata for a specific user
-                    </option>
-                    <option value="/solaruser/api/v1/sec/users/meta/{userId}" data-method="DELETE">
-                      Delete metadata for a specific user
                     </option>
                   </optgroup>
                 </select>
