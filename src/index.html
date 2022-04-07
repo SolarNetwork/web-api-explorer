@@ -194,7 +194,7 @@
                       Datum, running total
                     </option>
                   </optgroup>
-                  <optgroup label="Datum Metadata">
+                  <optgroup label="Datum Metadata (read only)">
                     <option
                       value="/solarquery/api/v1/sec/datum/meta/{nodeId}"
                       data-docs="SolarQuery-API#list-node-datum-metadata"
@@ -218,27 +218,6 @@
                       data-docs="SolarQuery-API#datum-stream-metadata-id-list"
                     >
                       View datum stream metadata IDs
-                    </option>
-                    <option
-                      value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
-                      data-method="POST"
-                      data-docs="SolarQuery-API#add-node-datum-metadata"
-                    >
-                      Add metadata for a specific source
-                    </option>
-                    <option
-                      value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
-                      data-method="PUT"
-                      data-docs="SolarQuery-API#store-node-datum-metadata"
-                    >
-                      Store metadata for a specific source
-                    </option>
-                    <option
-                      value="/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
-                      data-method="DELETE"
-                      data-docs="SolarQuery-API#delete-node-datum-metadata"
-                    >
-                      Delete metadata for a specific source
                     </option>
                   </optgroup>
                   <optgroup label="Datum Range">
@@ -387,7 +366,7 @@
                       Location datum, running total
                     </option>
                   </optgroup>
-                  <optgroup label="Location Datum Metadata">
+                  <optgroup label="Location Datum Metadata (read only)">
                     <option
                       value="/solarquery/api/v1/sec/location/meta?query={query}&tags={tag}"
                       data-docs="SolarQuery-API#find-location-datum-metadata"
@@ -405,27 +384,6 @@
                       data-docs="SolarQuery-API#get-location-datum-metadata"
                     >
                       View location datum metadata for a specific source
-                    </option>
-                    <option
-                      value="/solarquery/api/v1/sec/location/meta/{locationId}/{sourceId}"
-                      data-method="POST"
-                      data-docs="SolarQuery-API#add-location-datum-metadata"
-                    >
-                      Add location metadata for a specific source
-                    </option>
-                    <option
-                      value="/solarquery/api/v1/sec/location/meta/{locationId}/{sourceId}"
-                      data-method="PUT"
-                      data-docs="SolarQuery-API#store-location-datum-metadata"
-                    >
-                      Store location metadata for a specific source
-                    </option>
-                    <option
-                      value="/solarquery/api/v1/sec/location/meta/{locationId}/{sourceId}"
-                      data-method="DELETE"
-                      data-docs="SolarQuery-API#delete-location-datum-metadata"
-                    >
-                      Delete location metadata for a specific source
                     </option>
                   </optgroup>
                   <optgroup label="Location Datum Range">
@@ -629,6 +587,29 @@
                       Delete datum auxillary record
                     </option>
                   </optgroup>
+                  <optgroup label="Datum Metadata (read/write)">
+                    <option
+                      value="/solaruser/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
+                      data-method="POST"
+                      data-docs="SolarUser-API#datum-metadata-add"
+                    >
+                      Add metadata for a specific source
+                    </option>
+                    <option
+                      value="/solaruser/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
+                      data-method="PUT"
+                      data-docs="SolarUser-API#datum-metadata-store"
+                    >
+                      Store metadata for a specific source
+                    </option>
+                    <option
+                      value="/solaruser/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
+                      data-method="DELETE"
+                      data-docs="SolarUser-API#datum-metadata-delete"
+                    >
+                      Delete metadata for a specific source
+                    </option>
+                  </optgroup>
                   <optgroup label="Instructions">
                     <option
                       value="/solaruser/api/v1/sec/instr/add?topic=DisableOperationalModes&nodeIds={nodeIds}&parameters%5B0%5D.name=OpMode&parameters%5B0%5D.value=hyper"
@@ -682,6 +663,43 @@
                       data-docs="SolarUser-API#update-instruction-state"
                     >
                       Update instructions state
+                    </option>
+                  </optgroup>
+                  <optgroup label="Location Datum Metadata (read/write)">
+                    <option
+                      value="/solaruser/api/v1/sec/location/meta/{locationId}/{sourceId}"
+                      data-method="POST"
+                      data-docs="SolarUser-API#location-datum-metadata-add"
+                    >
+                      Add location metadata for a specific source
+                    </option>
+                    <option
+                      value="/solaruser/api/v1/sec/location/meta/{locationId}/{sourceId}"
+                      data-method="PUT"
+                      data-docs="SolarUser-API#location-datum-metadata-store"
+                    >
+                      Store location metadata for a specific source
+                    </option>
+                    <option
+                      value="/solaruser/api/v1/sec/location/meta/{locationId}/{sourceId}"
+                      data-method="DELETE"
+                      data-docs="SolarUser-API#ocation-datum-metadata-delete"
+                    >
+                      Delete location metadata for a specific source
+                    </option>
+                  </optgroup>
+                  <optgroup label="Location Datum Range">
+                    <option
+                      value="/solaruser/api/v1/sec/location/datum/interval?locationId={locationId}"
+                      data-docs="SolarQuery-API#location-reportable-interval"
+                    >
+                      Interval
+                    </option>
+                    <option
+                      value="/solaruser/api/v1/sec/location/datum/sources?locationId={locationId}"
+                      data-docs="SolarQuery-API#location-reportable-sources"
+                    >
+                      Sources
                     </option>
                   </optgroup>
                   <optgroup label="Node Metadata (read/write)">
