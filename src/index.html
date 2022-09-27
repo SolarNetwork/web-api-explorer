@@ -744,6 +744,14 @@
                       Update datum stream metadata
                     </option>
                   </optgroup>
+                  <optgroup label="User Events">
+                    <option
+                      value="/solaruser/api/v1/sec/user/events?startDate={yyyy-MM-dd hh:mm}&endDate={yyyy-MM-dd hh:mm}&tags={ocpp,message,received}&searchFilter={(action%3DBootNotification)}"
+                      data-docs="SolarUser-API#user-app-event-list"
+                    >
+                      List user events
+                    </option>
+                  </optgroup>
                   <optgroup label="User Metadata (read/write)">
                     <option
                       value="/solaruser/api/v1/sec/users/meta"
