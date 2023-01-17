@@ -462,6 +462,13 @@
                       Generate token
                     </option>
                     <option
+                      value="/solaruser/api/v1/sec/user/auth-tokens/info?tokenId={token}name={name}&description={description}"
+                      data-method="POST"
+                      data-docs="SolarUser-API#security-token-update-info"
+                    >
+                      Update info
+                    </option>
+                    <option
                       value="/solaruser/api/v1/sec/user/auth-tokens/status?tokenId={token}status={status:Active|Disabled}"
                       data-method="POST"
                       data-docs="SolarUser-API#security-token-update-status"
@@ -640,6 +647,12 @@
                       Update platform
                     </option>
                     <option
+                      value="/solaruser/api/v1/sec/instr?nodeIds={nodeIds}&states={states}&startDate=2022-01-01T00:00&endDate=2022-01-02T00:00"
+                      data-docs="SolarUser-API#list-instructions"
+                    >
+                      List instructions
+                    </option>
+                    <option
                       value="/solaruser/api/v1/sec/instr/viewActive?nodeIds={nodeIds}"
                       data-docs="SolarUser-API#view-active-instructions"
                     >
@@ -655,7 +668,7 @@
                       value="/solaruser/api/v1/sec/instr/view?ids={instructionIds}"
                       data-docs="SolarUser-API#view-instruction"
                     >
-                      View instructions
+                      View instructions by ID
                     </option>
                     <option
                       value="/solaruser/api/v1/sec/instr/updateState?ids={instructionIds}&state={instructionState:(Received|Executing|Declined|Completed)}"
