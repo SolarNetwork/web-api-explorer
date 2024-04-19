@@ -3,7 +3,7 @@ import {
   AuthorizationV2Builder,
   HttpContentType,
   HttpHeaders,
-  HttpMethod
+  HttpMethod,
 } from "solarnetwork-api-core";
 
 export default class Explorer {
@@ -38,7 +38,11 @@ export default class Explorer {
           }
           this.contentType = HttpContentType.FORM_URLENCODED_UTF8;
         } else {
-          // assume content type is json if post body provided
+          // assume content type is json if post body provided (escape newlines and tabs)
+          this.data = this.data
+            .replaceAll("\n", "\\n")
+            .replaceAll("\r", "\\r")
+            .replaceAll("\t", "\\t");
           this.contentType = HttpContentType.APPLICATION_JSON_UTF8;
         }
         if (this.data !== undefined && this.data.length < 1) {
@@ -246,7 +250,7 @@ export default class Explorer {
       dataType: dType,
       data: this.data,
       contentType: this.contentType,
-      beforeSend: function(xhr) {
+      beforeSend: function (xhr) {
         if (!me.isAuthRequired()) {
           return;
         }
@@ -254,7 +258,7 @@ export default class Explorer {
         if (me.authType == 2) {
           me.handleAuthV2(xhr);
         }
-      }
+      },
     });
   }
 }
