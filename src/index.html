@@ -487,12 +487,12 @@
                       data-method="PATCH"
                       data-docs="SolarUser-API#security-token-policy-add"
                       data-upload='{
-                        "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
-                        "nodeIds": [1,2,3],
-                        "sourceIds": ["Foo","Bar"],
-                        "nodeMetadataPaths":["/pm/**"],
-                        "userMetadataPaths": ["/m/**"]
-                    }'
+    "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+    "nodeIds": [1,2,3],
+    "sourceIds": ["Foo","Bar"],
+    "nodeMetadataPaths":["/pm/**"],
+    "userMetadataPaths": ["/m/**"]
+}'
                     >
                       Merge policy
                     </option>
@@ -501,12 +501,12 @@
                       data-method="PUT"
                       data-docs="SolarUser-API#security-token-policy-store"
                       data-upload='{
-                        "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
-                        "nodeIds": [1,2,3],
-                        "sourceIds": ["Foo","Bar"],
-                        "nodeMetadataPaths":["/pm/**"],
-                        "userMetadataPaths": ["/m/**"]
-                    }'
+    "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+    "nodeIds": [1,2,3],
+    "sourceIds": ["Foo","Bar"],
+    "nodeMetadataPaths":["/pm/**"],
+    "userMetadataPaths": ["/m/**"]
+}'
                     >
                       Replace policy
                     </option>
@@ -529,28 +529,28 @@
                       data-method="POST"
                       data-docs="SolarUser-API#datum-auxiliary-store"
                       data-upload='{
-                        "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
-                        "created": "2019-02-06 18:35:50.943Z",
-                        "nodeId": 123,
-                        "sourceId": "Foo",
-                        "type": "Reset",
-                        "notes": "Meter replaced.",
-                        "final": {
-                          "a": {
-                            "wattHours": 123456789
-                          }
-                        },
-                        "start": {
-                          "a": {
-                            "wattHours": 123
-                          }
-                        },
-                        "meta": {
-                          "m": {
-                            "foo": "bar"
-                          }
-                        }
-                    }'
+    "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+    "created": "2019-02-06 18:35:50.943Z",
+    "nodeId": 123,
+    "sourceId": "Foo",
+    "type": "Reset",
+    "notes": "Meter replaced.",
+    "final": {
+      "a": {
+        "wattHours": 123456789
+      }
+    },
+    "start": {
+      "a": {
+        "wattHours": 123
+      }
+    },
+    "meta": {
+      "m": {
+        "foo": "bar"
+      }
+    }
+}'
                     >
                       Store datum auxillary record
                     </option>
@@ -559,30 +559,30 @@
                       data-method="POST"
                       data-docs="SolarUser-API#datum-auxiliary-move"
                       data-upload='{
-                      "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
-                      "from": {
-                        "created": 1393657200000,
-                        "nodeId": "11",
-                        "sourceId": "Main",
-                        "type": "Reset"
-                      },
-                      "to": {
-                        "created": 1551310811948,
-                        "nodeId": "123",
-                        "sourceId": "Foo",
-                        "type": "Reset",
-                        "final": {
-                          "a": {
-                            "wattHours": 12345
-                          }
-                        },
-                        "start": {
-                          "a": {
-                            "wattHours": "123"
-                          }
-                        }
-                      }
-                    }'
+  "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+  "from": {
+    "created": 1393657200000,
+    "nodeId": "11",
+    "sourceId": "Main",
+    "type": "Reset"
+  },
+  "to": {
+    "created": 1551310811948,
+    "nodeId": "123",
+    "sourceId": "Foo",
+    "type": "Reset",
+    "final": {
+      "a": {
+        "wattHours": 12345
+      }
+    },
+    "start": {
+      "a": {
+        "wattHours": "123"
+      }
+    }
+  }
+}'
                     >
                       Move datum auxillary record
                     </option>
@@ -645,6 +645,20 @@
                       data-docs="SolarUser-API#queue-instruction"
                     >
                       Update platform
+                    </option>
+                    <option
+                      value="/solaruser/api/v1/sec/instr/exec/DatumExpression"
+                      data-method="POST"
+                      data-docs="SolarUser-API#execute-instruction"
+                      data-upload='{
+  "EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+  "nodeId": 123,
+  "params": {
+    "expression": "hasOffset(&apos;power/1&apos;, 1) ? roundDown(latest(&apos;power/1&apos;).wattHours - offset(&apos;power/1&apos;,1).wattHours, 3) : 0"
+  }
+}'
+                    >
+                      Datum Expression (Execute)
                     </option>
                     <option
                       value="/solaruser/api/v1/sec/instr?nodeIds={nodeIds}&states={states}&startDate=2022-01-01T00:00&endDate=2022-01-02T00:00"
