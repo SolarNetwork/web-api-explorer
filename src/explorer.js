@@ -39,10 +39,11 @@ export default class Explorer {
           this.contentType = HttpContentType.FORM_URLENCODED_UTF8;
         } else {
           // assume content type is json if post body provided (escape newlines and tabs)
-          this.data = this.data
-            .replaceAll("\n", "\\n")
-            .replaceAll("\r", "\\r")
-            .replaceAll("\t", "\\t");
+          try {
+            this.data = JSON.stringify(JSON.parse(this.data));
+          } catch (e) {
+            console.warn("Error parsing content as JSON: %s", e);
+          }
           this.contentType = HttpContentType.APPLICATION_JSON_UTF8;
         }
         if (this.data !== undefined && this.data.length < 1) {
