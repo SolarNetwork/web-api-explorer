@@ -1,4 +1,5 @@
 import $ from "jquery";
+import { Popover } from "bootstrap";
 import { default as Hex } from "crypto-js/enc-hex.js";
 import hljs from "highlight.js/lib/core";
 import { iso8601Date } from "solarnetwork-api-core/lib/util/dates";
@@ -22,10 +23,10 @@ function showDocLink(this: HTMLElement) {
 	}
 }
 
-function copyCurl(e: Event) {
+function copyElement(src: HTMLElement, elementId: string) {
 	var range,
 		selection = window.getSelection(),
-		curlEl = document.getElementById("curl-command")!;
+		curlEl = document.getElementById(elementId)!;
 
 	if (!(curlEl && curlEl.firstChild)) {
 		return;
@@ -42,7 +43,27 @@ function copyCurl(e: Event) {
 		selection.removeAllRanges();
 		selection.addRange(range);
 		document.execCommand("copy");
+		selection.removeAllRanges();
+		if (src) {
+			let popover = Popover.getOrCreateInstance(src, {
+				title: "Copy to clipboard",
+				content: "Copied!",
+				animation: true,
+			});
+			popover.show();
+			setTimeout(() => {
+				popover.hide();
+			}, 2000);
+		}
 	}
+}
+
+function copyCurl(evt: Event) {
+	copyElement(evt.target as HTMLElement, "curl-command");
+}
+
+function copyResult(evt: Event) {
+	copyElement(evt.target as HTMLElement, "result");
 }
 
 /**
@@ -231,11 +252,11 @@ export default class SamplerApp {
 		return result;
 	}
 
-	showResult(msg: string, highlight: boolean) {
+	showResult(msg: string, highlight: boolean, output: string) {
 		var el = document.getElementById("result")!;
 		el.innerText = msg;
-		if (highlight) {
-			hljs.highlightElement(el);
+		if (highlight && output !== "csv") {
+			el.innerHTML = hljs.highlight(msg, { language: output }).value;
 		}
 	}
 
@@ -323,7 +344,8 @@ export default class SamplerApp {
 			var highlight = res.ok && !!this.explorerElements.highlight.checked;
 			this.showResult(
 				await this.textForDisplay(res, explore.output),
-				highlight
+				highlight,
+				explore.output
 			);
 			if (res.ok) {
 				this.addHistoryItem(explore);
@@ -405,5 +427,8 @@ export default class SamplerApp {
 
 		// handle doc link
 		$("button.doc-link").on("click", showDocLink);
+
+		// handle result copy
+		$("#result-copy-btn").on("click", copyResult);
 	}
 }

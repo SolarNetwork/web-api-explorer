@@ -2,12 +2,12 @@ import "../scss/style.scss";
 import { replaceData } from "./utils";
 
 import hljs from "highlight.js/lib/core";
-import javascript from "highlight.js/lib/languages/javascript";
+import json from "highlight.js/lib/languages/json";
 import xml from "highlight.js/lib/languages/xml";
 
 import SamplerApp from "./sampler.js";
 
-hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("json", json);
 hljs.registerLanguage("xml", xml);
 
 // populate app version and then display it
