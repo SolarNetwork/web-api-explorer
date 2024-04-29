@@ -1,0 +1,26 @@
+{
+	"solarquery": [
+		{
+			"title": "Authentication",
+			"shortcuts": [
+				{
+					"title": "Refresh a V2 token",
+					"doc": "SolarQuery-API#refresh-token",
+					"url": "/solarquery/api/v1/sec/auth-tokens/refresh/v2?date={YYYY-MM-DD}"
+				}
+			]
+		}
+	],
+	"solaruser": [
+		{
+			"title": "Authentication",
+			"shortcuts": [
+				{
+					"title": "Verify authentication",
+					"doc": "SolarUser-API#authentication-check",
+					"url": "/solaruser/api/v1/sec/whoami"
+				}
+			]
+		}
+	]
+}
