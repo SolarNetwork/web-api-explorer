@@ -8,40 +8,22 @@ This project contains a webapp that helps you explore the SolarNetwork web API.
 
 Fill in a valid SolarNetwork security token and secret, then start exploring!
 
-# Building
+# Building from source
 
-The build uses [NPM][npm] or [Yarn][yarn]. First, initialize the dependencies:
+To build yourself, clone or download this repository. You need to have
+Node 16+ installed. Then:
 
-```shell
-# NPM
-npm install
+```sh
+# initialize dependencies
+npm ci
 
-# or, Yarn
-yarn install
+# run development live server on http://localhost:8080
+npm run dev
+
+# build for production
+npm run build
 ```
 
-Then, the development web server can be started via
-
-```shell
-# NPM
-npm run start
-
-# or, Yarn
-yarn run start
-```
-
-and then the app can be reached at [localhost:9000](http://localhost:9000). For a
-produciton build, use
-
-```shell
-# NPM
-npm run build -- --config webpack.prod.js
-
-# or, Yarn
-yarn run build --config webpack.prod.js
-```
-
-and the app will be built in the `dist` directory.
+Running the `build` script will generate the application into the `dist/` directory.
 
 [npm]: https://www.npmjs.com/
-[yarn]: https://yarnpkg.com/
