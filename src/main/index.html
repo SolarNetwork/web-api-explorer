@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="img/solarnetwork-favicon.svg"
+		/>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<title>SolarNetwork API Explorer</title>
+	</head>
+	<body>
+		<div class="container py-3 px-3 mx-auto">
+			<div class="row">
+				<div class="col">
+					<h2>SolarNetwork API Explorer</h2>
+					<p>
+						This page allows you to explore the SolarNetwork web
+						API. Fill in your SolarNetwork authorization token and
+						server details on the left, then use the API templates
+						to fill in an API URL to call. Replace any template
+						parameters (for example, replace
+						<code>{nodeId}</code> with your node's ID). Then click
+						the <b>Execute</b> button to submit the query and
+						display the results at the bottom. The source code for
+						this app is
+						<a
+							href="https://github.com/SolarNetwork/web-api-explorer"
+							>available on GitHub</a
+						>.
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="container py-3 px-3 mx-auto">
+			<div class="row">
+				<div class="col-md-3">
+					<form id="credentials">
+						<div class="form-group">
+							<label class="col-form-label-sm">Token</label>
+							<input
+								class="form-control form-control-sm"
+								type="text"
+								name="token"
+							/>
+						</div>
+						<div class="form-group">
+							<label class="col-form-label-sm">Secret</label>
+							<input
+								class="form-control form-control-sm"
+								type="password"
+								name="secret"
+							/>
+						</div>
+						<div class="form-group">
+							<label class="col-form-label-sm">Host</label>
+							<input
+								class="form-control form-control-sm"
+								type="text"
+								name="host"
+								value="http://localhost:9082"
+							/>
+						</div>
+						<div class="form-group">
+							<label class="col-form-label-sm">Date</label>
+							<input
+								class="form-control form-control-sm"
+								type="text"
+								name="date"
+								value=""
+								placeholder="Leave blank for current date"
+							/>
+						</div>
+						<div class="form-group">
+							<label class="col-form-label-sm">Proxy</label>
+							<input
+								class="form-control form-control-sm"
+								type="text"
+								name="proxy"
+								value=""
+								placeholder="e.g. https://query.solarnetwork.net"
+							/>
+						</div>
+						<footer
+							id="app-version"
+							class="d-none text-secondary my-3"
+							aria-hidden="true"
+						>
+							<small
+								>Version <span class="data-app-version"></span>.
+								Source on
+								<a
+									href="https://github.com/SolarNetwork/web-api-sampler/"
+									class="link-secondary"
+									target="_blank"
+									>GitHub</a
+								>.</small
+							>
+						</footer>
+					</form>
+				</div>
+				<div class="col">
+					<form id="sampler-form" class="container">
+						<div class="form-group row">
+							<label class="col-2 col-form-label">Service</label>
+							<div class="col">
+								<textarea
+									name="path"
+									class="form-control"
+									rows="3"
+									placeholder="Enter service URL and query parameters here"
+								></textarea>
+							</div>
+						</div>
+						<div class="form-group row mt-3">
+							<label class="col-2 col-form-label"
+								>SolarQuery</label
+							>
+							<div class="col">
+								<select
+									id="shortcuts-solarquery"
+									name="shortcutSolarQuery"
+									class="form-control shortcuts"
+									data-app="solarquery"
+								>
+									<option></option>
+								</select>
+							</div>
+							<div class="col-1">
+								<button
+									id="solarquery-help"
+									type="button"
+									class="btn btn-link doc-link"
+									disabled
+								>
+									<i class="bi bi-info-circle"></i>
+								</button>
+							</div>
+						</div>
+						<div class="form-group row mt-3">
+							<label class="col-2 col-form-label"
+								>SolarUser</label
+							>
+							<div class="col">
+								<select
+									id="shortcuts-solaruser"
+									name="shortcutSolarUser"
+									class="form-control shortcuts"
+									data-app="solaruser"
+								>
+									<option></option>
+								</select>
+							</div>
+							<div class="col-1">
+								<button
+									id="solaruser-help"
+									type="button"
+									class="btn btn-link doc-link"
+									disabled
+								>
+									<i class="bi bi-info-circle"></i>
+								</button>
+							</div>
+						</div>
+						<div class="form-group row mt-3">
+							<label class="col-2 col-form-label">History</label>
+							<div class="col">
+								<select id="history" class="form-control">
+									<option></option>
+								</select>
+							</div>
+							<div class="col-1">
+								<!-- Nothing here. -->
+							</div>
+						</div>
+						<div class="form-group row mt-1">
+							<label class="col-2 col-form-label">Auth</label>
+							<div class="col">
+								<div class="form-control-plaintext">
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="useAuth"
+											value="2"
+											checked="checked"
+										/>
+										<label class="radio form-check-label">
+											Token
+											<a
+												href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-authentication-scheme-V2"
+												>V2</a
+											>
+										</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="useAuth"
+											value="0"
+										/>
+										<label class="radio form-check-label">
+											None
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group row mt-1">
+							<label class="col-2 col-form-label">Method</label>
+							<div class="col">
+								<div class="form-control-plaintext">
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="method"
+											value="GET"
+											checked="checked"
+										/>
+										<label class="radio form-check-label"
+											>GET</label
+										>
+									</div>
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="method"
+											value="POST"
+										/>
+										<label class="radio form-check-label"
+											>POST</label
+										>
+									</div>
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="method"
+											value="PUT"
+										/>
+										<label class="radio form-check-label"
+											>PUT</label
+										>
+									</div>
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="method"
+											value="PATCH"
+										/>
+										<label class="radio form-check-label"
+											>PATCH</label
+										>
+									</div>
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="method"
+											value="DELETE"
+										/>
+										<label class="radio form-check-label"
+											>DELETE</label
+										>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div
+							class="form-group row mt-3"
+							style="display: none"
+							id="upload"
+						>
+							<label class="col-2 col-form-label">Upload</label>
+							<div class="col">
+								<textarea
+									name="upload"
+									class="form-control"
+									rows="3"
+									placeholder="Place upload JSON here if needed"
+								></textarea>
+							</div>
+						</div>
+						<div class="form-group row mt-1">
+							<label class="col-2 col-form-label">Output</label>
+							<div class="col">
+								<div class="form-control-plaintext">
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="output"
+											value="json"
+											checked="checked"
+										/>
+										<label class="radio form-check-label"
+											>JSON</label
+										>
+									</div>
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="output"
+											value="csv"
+										/>
+										<label class="radio form-check-label"
+											>CSV</label
+										>
+									</div>
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="output"
+											value="xml"
+										/>
+										<label class="radio form-check-label"
+											>XML</label
+										>
+									</div>
+									<div class="form-check form-check-inline">
+										<input
+											type="checkbox"
+											class="form-check-input"
+											name="highlight"
+											checked
+										/>
+										<label class="checkbox form-check-label"
+											>Syntax highlighting</label
+										>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group row mt-1">
+							<div class="col offset-2">
+								<button type="submit" class="btn btn-primary">
+									Execute
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="row" id="auth-result">
+				<div class="col">
+					<h5 id="auth-result-toggle" class="clickable activator">
+						<i
+							class="bi bi-caret-right-fill activateable inactive"
+						></i
+						><i
+							class="bi bi-caret-down-fill activateable active"
+						></i>
+						Auth Support
+					</h5>
+					<div id="auth-result-container" class="activateable active">
+						<form id="auth-options" class="form-control-plaintext">
+							<div
+								class="form-check form-check-inline"
+								title="Check to include a Digest header for PATCH/POST/PUT requests"
+							>
+								<input
+									type="checkbox"
+									class="form-check-input"
+									name="withDigest"
+									id="auth-with-digest"
+									checked
+								/>
+								<label
+									class="form-check-label"
+									for="auth-with-digest"
+									>Digest header</label
+								>
+							</div>
+						</form>
+						<p>
+							This shows the the
+							<a
+								target="_blank"
+								href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-authentication-scheme-V2#signature-value"
+								>computed</a
+							>
+							HTTP <code>Authorization</code> header:
+						</p>
+						<pre id="auth-header" class="data"></pre>
+						<p>
+							The following sections detail the steps taken to
+							generate the
+							<code>Authorization</code> header.
+						</p>
+						<h5>Canonical request message</h5>
+						<p>
+							This shows the
+							<a
+								target="_blank"
+								href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-authentication-scheme-V2#canonical-request-message"
+								>canonical request message</a
+							>
+							that is hashed and included in the authorization
+							message:
+						</p>
+						<pre id="req-message" class="data"></pre>
+						<h5>Signing message</h5>
+						<p>
+							This shows the
+							<a
+								target="_blank"
+								href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-authentication-scheme-V2#signing-message"
+								>signing message</a
+							>
+							that is hashed to form the authorization signature
+							value:
+						</p>
+						<pre id="auth-message" class="data"></pre>
+						<h5>Signing key</h5>
+						<p>
+							This shows the hex-encoded
+							<a
+								target="_blank"
+								href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-authentication-scheme-V2#signing-key"
+								>signing key</a
+							>
+							used to sign the message, derived from the token
+							secret using a signing date value of
+							<code id="auth-sign-date">YYYYMMDD</code>:
+						</p>
+						<pre id="sign-key" class="data"></pre>
+					</div>
+				</div>
+			</div>
+			<div class="row" id="curl-result">
+				<div class="col">
+					<h5 id="curl-result-toggle" class="clickable activator">
+						<i
+							class="bi bi-caret-right-fill activateable inactive"
+						></i
+						><i
+							class="bi bi-caret-down-fill activateable active"
+						></i>
+						Curl command
+					</h5>
+					<div id="curl-result-container" class="activateable active">
+						<form id="curl-only">
+							<div class="form-group form-check">
+								<input
+									type="checkbox"
+									class="form-check-input"
+									name="curlOnly"
+									id="curl-only-checkbox"
+								/>
+								<label
+									class="form-check-label"
+									for="curl-only-checkbox"
+									>No request</label
+								>
+								— check this to only generate the
+								<code>curl</code> command, without actually
+								making the request in the browser.
+							</div>
+						</form>
+						<p>
+							This shows a <code>curl</code> command to make the
+							same HTTP request:
+						</p>
+						<div class="row">
+							<div class="col-sm-11">
+								<pre id="curl-command" class="data"></pre>
+							</div>
+							<div
+								class="col-sm-1 text-secondary"
+								id="curl-copy-btn"
+							>
+								<i
+									class="bi bi-copy clickable"
+									title="Copy curl command to clipboard"
+								></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<pre class="prettyprint"><code id="result"></code></pre>
+				</div>
+				<div class="col-sm-1" id="result-copy-btn">
+					<i
+						class="bi bi-copy clickable"
+						title="Copy result to clipboard"
+						disabled
+					></i>
+				</div>
+			</div>
+		</div>
+		<script type="module" src="ts/main.ts"></script>
+	</body>
+</html>
