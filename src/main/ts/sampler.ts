@@ -66,6 +66,19 @@ function copyResult(evt: Event) {
 	copyElement(evt.target as HTMLElement, "result");
 }
 
+interface ShortcutGroup {
+	title: string;
+	shortcuts: ShortcutInfo[];
+}
+
+interface ShortcutInfo {
+	title: string;
+	doc?: string;
+	url: string;
+	method?: string;
+	upload?: any;
+}
+
 /**
  * SolarNetwork web API sampler app.
  */
@@ -75,6 +88,9 @@ export default class SamplerApp {
 	readonly snSettingsElements: SnSettingsFormElements;
 	readonly explorerForm: HTMLFormElement;
 	readonly explorerElements: ExplorerFormElements;
+
+	solarQueryShortcuts?: ShortcutGroup[];
+	solarUserShortcuts?: ShortcutGroup[];
 
 	/**
 	 * Constructor.
@@ -206,7 +222,7 @@ export default class SamplerApp {
 		var reg = /(>)(<)(\/*)/g;
 		xml = xml.replace(reg, "$1\r\n$2$3");
 		var pad = 0;
-		$.each(xml.split("\r\n"), function (index, node) {
+		$.each(xml.split("\r\n"), function (_index, node) {
 			var indent = 0;
 			if (node.match(/.+<\/\w[^>]*>$/)) {
 				indent = 0;
@@ -261,22 +277,43 @@ export default class SamplerApp {
 	}
 
 	handleShortcut(select: HTMLSelectElement) {
-		var form = select.form!,
+		const idx = select.selectedIndex - 1;
+		const appName = select.dataset["app"];
+		const groups =
+			appName === "solaruser"
+				? this.solarUserShortcuts
+				: this.solarQueryShortcuts;
+		if (!groups) {
+			return;
+		}
+
+		// locate shortcut within group, based on select's selectedIndex
+		let shortcut: ShortcutInfo | undefined = undefined;
+		let i = 0;
+		GROUPS: for (const group of groups) {
+			const offset = idx - i;
+			if (offset < group.shortcuts.length) {
+				// found group
+				shortcut = group.shortcuts[offset];
+				break GROUPS;
+			}
+			i += group.shortcuts.length;
+		}
+		if (!shortcut) {
+			return;
+		}
+		const form = select.form!,
 			jForm = $(form),
-			val = select.value,
-			appName = select.dataset["app"],
-			optEl,
-			method,
-			upload,
-			docs;
+			method = shortcut.method || "GET";
+		let val = shortcut.url,
+			docs = shortcut.doc,
+			upload = shortcut.upload || "";
+
+		// if not using auth, swap /sec for /pub
 		if (jForm.find("input[name=useAuth]:checked").val() === "0") {
 			val = val.replace(/\/sec\//, "/pub/");
 		}
 		this.explorerElements.path.value = val;
-		optEl = $(select.options[select.selectedIndex]);
-		method = optEl.data("method") || "GET";
-		upload = optEl.data("upload") || "";
-		docs = optEl.data("docs");
 		if (typeof upload !== "string") {
 			// render as pretty-printed JSON
 			upload = JSON.stringify(upload, undefined, "  ");
@@ -293,7 +330,7 @@ export default class SamplerApp {
 					"https://github.com/SolarNetwork/solarnetwork/wiki/" + docs;
 			}
 			$("#" + appName + "-help")
-				.attr("data-doc-link", docs)
+				.attr("data-doc-link", docs || "")
 				.prop("disabled", !docs);
 		}
 	}
@@ -304,7 +341,6 @@ export default class SamplerApp {
 		}
 
 		var authBuilder = explore.authV2Builder();
-		//var sortedHeaderNames = authBuilder.canonicalHeaderNames();
 		var canonicalReq = authBuilder.buildCanonicalRequestData();
 		var signatureData = authBuilder.computeSignatureData(canonicalReq);
 
@@ -319,16 +355,16 @@ export default class SamplerApp {
 		);
 	}
 
-	async handleSamplerFormSubmit(form: HTMLFormElement) {
+	async handleSamplerFormSubmit() {
 		var creds = new Credentials(this.snSettingsElements);
-		var explore = new Explorer(creds, this.explorerElements);
+		var explore = new Explorer(
+			creds,
+			this.explorerElements,
+			!(document.getElementById("auth-with-digest")! as HTMLInputElement)
+				.checked
+		);
 		var curlOnly = (
 			document.getElementById("curl-only-checkbox")! as HTMLInputElement
-		).checked;
-
-		// allow leaving off the Digest header
-		explore.withoutDigestHeader = !(
-			document.getElementById("auth-with-digest")! as HTMLInputElement
 		).checked;
 
 		// show some developer info in the auth-message area
@@ -353,6 +389,40 @@ export default class SamplerApp {
 		}
 	}
 
+	#setupShortcuts() {
+		fetch("templates.json").then(async (res) => {
+			const data = await res.json();
+			this.solarQueryShortcuts = data.solarquery as ShortcutGroup[];
+			this.solarUserShortcuts = data.solaruser as ShortcutGroup[];
+			SamplerApp.#populateShortcuts(
+				this.explorerElements.shortcutSolarQuery,
+				this.solarQueryShortcuts
+			);
+			SamplerApp.#populateShortcuts(
+				this.explorerElements.shortcutSolarUser,
+				this.solarUserShortcuts
+			);
+		});
+	}
+
+	static #populateShortcuts(
+		menu: HTMLSelectElement,
+		groups: ShortcutGroup[]
+	) {
+		for (const group of groups) {
+			const optGroup = document.createElement(
+				"optgroup"
+			) as HTMLOptGroupElement;
+			optGroup.label = group.title;
+			for (const shortcut of group.shortcuts) {
+				const opt = new Option();
+				opt.text = shortcut.title;
+				optGroup.appendChild(opt);
+			}
+			menu.appendChild(optGroup);
+		}
+	}
+
 	#init() {
 		// configure host to deployed hostname, unless file: or localhost
 		const app = this;
@@ -373,6 +443,8 @@ export default class SamplerApp {
 			);
 		}
 
+		this.#setupShortcuts();
+
 		// handle shortcuts menu
 		$("select.shortcuts").on("change", function (event) {
 			event.preventDefault();
@@ -388,7 +460,7 @@ export default class SamplerApp {
 		});
 
 		// handle toggling the auth-support/curl/etc pane
-		$(".clickable.activator").on("click", function (event) {
+		$(".clickable.activator").on("click", function () {
 			$(this).toggleClass("active");
 		});
 
@@ -400,7 +472,7 @@ export default class SamplerApp {
 			})
 			.filter(":checked")
 			.first()
-			.each(function (idx, el) {
+			.each(function (_idx, el) {
 				app.setupForUseAuth(el as HTMLInputElement);
 			});
 
@@ -412,14 +484,14 @@ export default class SamplerApp {
 			})
 			.filter(":checked")
 			.first()
-			.each(function (idx, el) {
+			.each(function (_idx, el) {
 				app.setupForMethod(el as HTMLInputElement);
 			});
 
 		// handle sampler form submit
 		$("#sampler-form").on("submit", function (event) {
 			event.preventDefault();
-			app.handleSamplerFormSubmit(this as HTMLFormElement);
+			app.handleSamplerFormSubmit();
 		});
 
 		// handle curl copy

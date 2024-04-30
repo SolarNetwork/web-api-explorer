@@ -10,14 +10,17 @@ import {
 } from "solarnetwork-api-core/lib/net";
 import { ExplorerFormElements } from "./forms";
 
+/**
+ * Helper class for handling the API Explorer request and response.
+ */
 export default class Explorer {
-	creds: Credentials;
-	env: EnvironmentConfig & HostConfig;
-	withoutDigestHeader: boolean;
+	readonly creds: Credentials;
+	readonly env: EnvironmentConfig & HostConfig;
+	readonly withoutDigestHeader: boolean;
 
-	authType: number; // 0 for none, 2 for V2
-	method: string;
-	output: string;
+	readonly authType: number; // 0 for none, 2 for V2
+	readonly method: string;
+	readonly output: string;
 
 	#path: string;
 	path: string;
@@ -26,16 +29,22 @@ export default class Explorer {
 	#data?: string;
 	#contentType?: string;
 
+	#authBuilder?: AuthorizationV2Builder;
+
 	/**
 	 * Constructor.
 	 *
 	 * @param creds the credentials
 	 * @param form the explorer form
 	 */
-	constructor(creds: Credentials, form: ExplorerFormElements) {
+	constructor(
+		creds: Credentials,
+		form: ExplorerFormElements,
+		withoutDigestHeader: boolean
+	) {
 		this.creds = creds;
 		this.env = creds.getEnvironment();
-		this.withoutDigestHeader = false;
+		this.withoutDigestHeader = withoutDigestHeader;
 
 		const jForm = $(form.path.form!);
 		this.authType = Number(
@@ -118,10 +127,6 @@ export default class Explorer {
 		return this.creds.proxy + this.path;
 	}
 
-	set contentType(contentType: string) {
-		this.#contentType = contentType;
-	}
-
 	/**
 	 * Get the request content type.
 	 *
@@ -135,6 +140,15 @@ export default class Explorer {
 				: HttpContentType.FORM_URLENCODED_UTF8;
 		}
 		return cType;
+	}
+
+	/**
+	 * Get the body content.
+	 *
+	 * @returns the body content, if any
+	 */
+	get content(): string | undefined {
+		return this.#data;
 	}
 
 	/**
@@ -166,6 +180,13 @@ export default class Explorer {
 	 * @returns the builder
 	 */
 	authV2Builder(): AuthorizationV2Builder {
+		if (!this.#authBuilder) {
+			this.#authBuilder = this.#createAuthBuilder();
+		}
+		return this.#authBuilder;
+	}
+
+	#createAuthBuilder(): AuthorizationV2Builder {
 		var authBuilder = new AuthorizationV2Builder(
 			this.creds.token,
 			this.env
@@ -213,6 +234,12 @@ export default class Explorer {
 		);
 		headers.set(HttpHeaders.AUTHORIZATION, auth.buildWithSavedKey());
 		headers.set(HttpHeaders.X_SN_DATE, auth.requestDateHeaderValue!);
+		if (auth.httpHeaders.firstValue(HttpHeaders.CONTENT_TYPE)) {
+			headers.set(
+				HttpHeaders.CONTENT_TYPE,
+				auth.httpHeaders.firstValue(HttpHeaders.CONTENT_TYPE)
+			);
+		}
 		if (auth.httpHeaders.firstValue(HttpHeaders.DIGEST)) {
 			headers.set(
 				HttpHeaders.DIGEST,

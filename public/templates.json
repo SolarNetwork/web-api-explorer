@@ -9,6 +9,316 @@
 					"url": "/solarquery/api/v1/sec/auth-tokens/refresh/v2?date={YYYY-MM-DD}"
 				}
 			]
+		},
+		{
+			"title": "Datum List",
+			"shortcuts": [
+				{
+					"title": "Most recent datum",
+					"doc": "SolarQuery-API#most-recent-datum",
+					"url": "/solarquery/api/v1/sec/datum/mostRecent?nodeId={nodeId}&sourceIds={sourceId}"
+				},
+				{
+					"title": "Datum, default sort",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Datum, default sort",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Datum, sorted by date descending",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&sorts%5B0%5D.sortKey=created&sorts%5B0%5D.descending=true&offset=0&max=50"
+				},
+				{
+					"title": "Datum, sorted by date, source",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&sorts%5B0%5D.sortKey=created&sorts%5B1%5D.sortKey=source&offset=0&max=50"
+				},
+				{
+					"title": "Datum, by 5 minute",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&sourceIds={sourceId}&aggregation=FiveMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Datum, by 10 minute",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=TenMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Datum, by 15 minutes",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=FifteenMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Datum, by 30 minutes",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=ThirtyMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Datum, by hour",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Hour&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Datum value, averaged by hour of day",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=HourOfDay"
+				},
+				{
+					"title": "Datum value, averaged seasonally by hour of day",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=SeasonalHourOfDay"
+				},
+				{
+					"title": "Datum, by day",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Day&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Datum value, averaged by day of week",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=DayOfWeek"
+				},
+				{
+					"title": "Datum value, averaged seasonally by day of week",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=SeasonalDayOfWeek"
+				},
+				{
+					"title": "Datum, by month",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Month&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Datum, running total",
+					"doc": "SolarQuery-API#datum-list",
+					"url": "/solarquery/api/v1/sec/datum/list?nodeId={nodeId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=RunningTotal"
+				}
+			]
+		},
+		{
+			"title": "Datum Metadata (read only)",
+			"shortcuts": [
+				{
+					"title": "View all datum metadata",
+					"doc": "SolarQuery-API#list-node-datum-metadata",
+					"url": "/solarquery/api/v1/sec/datum/meta/{nodeId}"
+				},
+				{
+					"title": "View datum metadata for a specific source",
+					"doc": "SolarQuery-API#get-node-datum-metadata",
+					"url": "/solarquery/api/v1/sec/datum/meta/{nodeId}/{sourceId}"
+				},
+				{
+					"title": "View datum stream metadata",
+					"doc": "SolarQuery-API#datum-stream-metadata-list",
+					"url": "/solarquery/api/v1/sec/datum/stream/meta/node?nodeIds={nodeIds}&sourceIds={sourceIds}"
+				},
+				{
+					"title": "View datum stream metadata IDs",
+					"doc": "SolarQuery-API#datum-stream-metadata-id-list",
+					"url": "/solarquery/api/v1/sec/datum/stream/meta/node/ids?nodeIds={nodeIds}&sourceIds={sourceIds}"
+				}
+			]
+		},
+		{
+			"title": "Datum Range",
+			"shortcuts": [
+				{
+					"title": "Interval",
+					"doc": "SolarQuery-API#reportable-interval",
+					"url": "/solarquery/api/v1/sec/range/interval?nodeId={nodeId}"
+				},
+				{
+					"title": "Sources",
+					"doc": "SolarQuery-API#reportable-sources",
+					"url": "/solarquery/api/v1/sec/range/sources?nodeId={nodeId}"
+				}
+			]
+		},
+		{
+			"title": "Datum Reading",
+			"shortcuts": [
+				{
+					"title": "Difference",
+					"doc": "SolarQuery-API#datum-reading",
+					"url": "/solarquery/api/v1/sec/datum/reading?readingType=Difference&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
+				},
+				{
+					"title": "Difference within",
+					"doc": "SolarQuery-API#datum-reading",
+					"url": "/solarquery/api/v1/sec/datum/reading?readingType=DifferenceWithin&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
+				},
+				{
+					"title": "Nearest difference",
+					"doc": "SolarQuery-API#datum-reading",
+					"url": "/solarquery/api/v1/sec/datum/reading?readingType=NearestDifference&tolerance=P1D&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
+				},
+				{
+					"title": "Calculated at",
+					"doc": "SolarQuery-API#datum-reading",
+					"url": "/solarquery/api/v1/sec/datum/reading?readingType=CalculatedAt&tolerance=P1D&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01"
+				},
+				{
+					"title": "Calculated at difference",
+					"doc": "SolarQuery-API#datum-reading",
+					"url": "/solarquery/api/v1/sec/datum/reading?readingType=CalcualtedAtDifference&tolerance=P1D&nodeId={nodeId}&sourceIds={sourceId}&localStartDate=2018-10-01&localEndDate=2018-11-01"
+				}
+			]
+		},
+		{
+			"title": "Location List",
+			"shortcuts": [
+				{
+					"title": "Location search",
+					"doc": "SolarQuery-API#location-lookup",
+					"url": "/solarquery/api/v1/sec/location?location.name={name}&location.country={country}&location.postalCode={postalCode}&location.timeZoneId={timeZoneId}"
+				}
+			]
+		},
+		{
+			"title": "Location Datum List",
+			"shortcuts": [
+				{
+					"title": "Most recent location datum",
+					"doc": "SolarQuery-API#location-datum-most-recent",
+					"url": "/solarquery/api/v1/sec/location/datum/mostRecent?locationId={locationId}&sourceIds={sourceId}"
+				},
+				{
+					"title": "Location datum, default sort",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Location datum, sorted by date, source",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&sorts%5B0%5D.sortKey=created&sorts%5B1%5D.sortKey=source&offset=0&max=50"
+				},
+				{
+					"title": "Location datum, by 5 minute",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=FiveMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Location datum, by 10 minute",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=TenMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Location datum, by 15 minutes",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=FifteenMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Location datum, by 30 minutes",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=ThirtyMinute&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Location datum, by hour",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Hour&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Location datum value, averaged by hour of day",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=HourOfDay"
+				},
+				{
+					"title": "Location datum value, averaged seasonally by hour of day",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=SeasonalHourOfDay"
+				},
+				{
+					"title": "Location datum, by day",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Day&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Location datum value, averaged by day of week",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=DayOfWeek"
+				},
+				{
+					"title": "Location datum value, averaged seasonally by day of week",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=SeasonalDayOfWeek"
+				},
+				{
+					"title": "Location datum, by month",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=Month&startDate=2013-01-01T12%3A00&endDate=2013-01-02T12%3A00&offset=0&max=50"
+				},
+				{
+					"title": "Location datum, running total",
+					"doc": "SolarQuery-API#location-datum-list",
+					"url": "/solarquery/api/v1/sec/location/datum/list?locationId={locationId}&sourceIds={sourceId}&withoutTotalResultsCount=true&aggregation=RunningTotal"
+				}
+			]
+		},
+		{
+			"title": "Location Datum Metadata (read only)",
+			"shortcuts": [
+				{
+					"title": "Find location datum metadata",
+					"doc": "SolarQuery-API#find-location-datum-metadata",
+					"url": "/solarquery/api/v1/sec/location/meta?query={query}&tags={tag}"
+				},
+				{
+					"title": "View all location datum metadata",
+					"doc": "SolarQuery-API#list-location-datum-metadata",
+					"url": "/solarquery/api/v1/sec/location/meta/{locationId}"
+				},
+				{
+					"title": "View location datum metadata for a specific source",
+					"doc": "SolarQuery-API#get-location-datum-metadata",
+					"url": "/solarquery/api/v1/sec/location/meta/{locationId}/{sourceId}"
+				}
+			]
+		},
+		{
+			"title": "Location Datum Range",
+			"shortcuts": [
+				{
+					"title": "Interval",
+					"doc": "SolarQuery-API#location-reportable-interval",
+					"url": "/solarquery/api/v1/sec/location/datum/interval?locationId={locationId}"
+				},
+				{
+					"title": "Sources",
+					"doc": "SolarQuery-API#location-reportable-sources",
+					"url": "/solarquery/api/v1/sec/location/datum/sources?locationId={locationId}"
+				}
+			]
+		},
+		{
+			"title": "Node Metadata (read only)",
+			"shortcuts": [
+				{
+					"title": "View specific node metadata",
+					"doc": "SolarQuery-API#node-metadata-view",
+					"url": "/solarquery/api/v1/sec/nodes/meta/{nodeId}"
+				},
+				{
+					"title": "Find node metadata",
+					"doc": "SolarQuery-API#node-metadata-list",
+					"url": "/solarquery/api/v1/sec/nodes/meta?nodeIds={nodeId}"
+				}
+			]
+		},
+		{
+			"title": "User Metadata (read only)",
+			"shortcuts": [
+				{
+					"title": "View specific user metadata",
+					"doc": "SolarQuery-API#user-metadata-view",
+					"url": "/solarquery/api/v1/sec/users/meta/{userId}"
+				}
+			]
 		}
 	],
 	"solaruser": [
@@ -19,6 +329,343 @@
 					"title": "Verify authentication",
 					"doc": "SolarUser-API#authentication-check",
 					"url": "/solaruser/api/v1/sec/whoami"
+				}
+			]
+		},
+		{
+			"title": "Security Tokens (read/write)",
+			"shortcuts": [
+				{
+					"title": "List all tokens",
+					"doc": "SolarUser-API#security-token-list",
+					"url": "/solaruser/api/v1/sec/user/auth-tokens"
+				},
+				{
+					"title": "Generate token",
+					"doc": "SolarUser-API#security-token-add",
+					"url": "/solaruser/api/v1/sec/user/auth-tokens/generate/{type:User|ReadNodeData}",
+					"method": "POST"
+				},
+				{
+					"title": "Update info",
+					"doc": "SolarUser-API#security-token-update-info",
+					"url": "/solaruser/api/v1/sec/user/auth-tokens/info?tokenId={token}name={name}&description={description}",
+					"method": "POST"
+				},
+				{
+					"title": "Update status",
+					"doc": "SolarUser-API#security-token-update-status",
+					"url": "/solaruser/api/v1/sec/user/auth-tokens/status?tokenId={token}status={status:Active|Disabled}",
+					"method": "POST"
+				},
+				{
+					"title": "Delete token",
+					"doc": "SolarUser-API#security-token-delete",
+					"url": "/solaruser/api/v1/sec/user/auth-tokens?tokenId={token}",
+					"method": "DELETE"
+				},
+				{
+					"title": "Merge policy",
+					"doc": "SolarUser-API#security-token-policy-add",
+					"url": "/solaruser/api/v1/sec/user/auth-tokens/policy?tokenId={token}",
+					"method": "PATCH",
+					"upload": {
+						"EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+						"nodeIds": [1, 2, 3],
+						"sourceIds": ["Foo", "Bar"],
+						"nodeMetadataPaths": ["/pm/**"],
+						"userMetadataPaths": ["/m/**"]
+					}
+				},
+				{
+					"title": "Replace policy",
+					"doc": "SolarUser-API#security-token-policy-store",
+					"url": "/solaruser/api/v1/sec/user/auth-tokens/policy?tokenId={token}",
+					"method": "PUT",
+					"upload": {
+						"EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+						"nodeIds": [1, 2, 3],
+						"sourceIds": ["Foo", "Bar"],
+						"nodeMetadataPaths": ["/pm/**"],
+						"userMetadataPaths": ["/m/**"]
+					}
+				}
+			]
+		},
+		{
+			"title": "Datum auxillary records",
+			"shortcuts": [
+				{
+					"title": "List datum auxillary records",
+					"doc": "SolarUser-API#datum-auxiliary-list",
+					"url": "/solaruser/api/v1/sec/datum/auxiliary?withoutTotalResultsCount=true&nodeIds={nodeIds}&sourceIds={sourceIds}&startDate={2019-01-01T00:00:00.000}&endDate={2019-01-02T00:00:00.000}"
+				},
+				{
+					"title": "View single datum auxillary reset record",
+					"doc": "SolarUser-API#datum-auxiliary-view",
+					"url": "/solaruser/api/v1/sec/datum/auxiliary?type=Reset&nodeId={nodeId}&sourceId={sourceId}&date={2019-01-01T00:00:00.000}"
+				},
+				{
+					"title": "Store datum auxillary record",
+					"doc": "SolarUser-API#datum-auxiliary-store",
+					"url": "/solaruser/api/v1/sec/datum/auxiliary",
+					"method": "POST",
+					"upload": {
+						"EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+						"created": "2019-02-06 18:35:50.943Z",
+						"nodeId": 123,
+						"sourceId": "Foo",
+						"type": "Reset",
+						"notes": "Meter replaced.",
+						"final": {
+							"a": { "wattHours": 123456789 }
+						},
+						"start": {
+							"a": { "wattHours": 123 }
+						},
+						"meta": {
+							"m": { "foo": "bar" }
+						}
+					}
+				},
+				{
+					"title": "Move datum auxillary record",
+					"doc": "SolarUser-API#datum-auxiliary-move",
+					"url": "/solaruser/api/v1/sec/datum/auxiliary/move",
+					"method": "POST",
+					"upload": {
+						"EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+						"from": {
+							"created": 1393657200000,
+							"nodeId": "11",
+							"sourceId": "Main",
+							"type": "Reset"
+						},
+						"to": {
+							"created": 1551310811948,
+							"nodeId": "123",
+							"sourceId": "Foo",
+							"type": "Reset",
+							"final": {
+								"a": { "wattHours": 12345 }
+							},
+							"start": {
+								"a": { "wattHours": "123" }
+							}
+						}
+					}
+				},
+				{
+					"title": "Delete datum auxillary record",
+					"doc": "SolarUser-API#datum-auxiliary-delete",
+					"url": "/solaruser/api/v1/sec/datum/auxiliary?type=Reset&nodeId={nodeId}&date={date}&sourceId={sourceId}",
+					"method": "DELETE"
+				}
+			]
+		},
+		{
+			"title": "Datum Metadata (read/write)",
+			"shortcuts": [
+				{
+					"title": "Add metadata for a specific source",
+					"doc": "SolarUser-API#datum-metadata-add",
+					"url": "/solaruser/api/v1/sec/datum/meta/{nodeId}/{sourceId}",
+					"method": "POST"
+				},
+				{
+					"title": "Store metadata for a specific source",
+					"doc": "SolarUser-API#datum-metadata-store",
+					"url": "/solaruser/api/v1/sec/datum/meta/{nodeId}/{sourceId}",
+					"method": "PUT"
+				},
+				{
+					"title": "Delete metadata for a specific source",
+					"doc": "SolarUser-API#datum-metadata-delete",
+					"url": "/solaruser/api/v1/sec/datum/meta/{nodeId}/{sourceId}",
+					"method": "DELETE"
+				}
+			]
+		},
+		{
+			"title": "Instructions",
+			"shortcuts": [
+				{
+					"title": "Disable operational mode",
+					"doc": "SolarUser-API#queue-instruction",
+					"url": "/solaruser/api/v1/sec/instr/add?topic=DisableOperationalModes&nodeIds={nodeIds}&parameters%5B0%5D.name=OpMode&parameters%5B0%5D.value=hyper",
+					"method": "POST"
+				},
+				{
+					"title": "Enable operational mode",
+					"doc": "SolarUser-API#queue-instruction",
+					"url": "/solaruser/api/v1/sec/instr/add?topic=EnableOperationalModes&nodeIds={nodeIds}&parameters%5B0%5D.name=OpMode&parameters%5B0%5D.value=hyper",
+					"method": "POST"
+				},
+				{
+					"title": "Set control parameter",
+					"doc": "SolarUser-API#queue-instruction",
+					"url": "/solaruser/api/v1/sec/instr/add?topic=SetControlParameter&nodeIds={nodeIds}&parameters%5B0%5D.name={controlId}&parameters%5B0%5D.value={controlValue}",
+					"method": "POST"
+				},
+				{
+					"title": "Update platform",
+					"doc": "SolarUser-API#queue-instruction",
+					"url": "/solaruser/api/v1/sec/instr/add?topic=UpdatePlatform&nodeIds={nodeIds}&parameters%5B0%5D.name=Version&parameters%5B0%5D.value=00001",
+					"method": "POST"
+				},
+				{
+					"title": "Datum Expression (Execute)",
+					"doc": "SolarUser-API#execute-instruction",
+					"url": "/solaruser/api/v1/sec/instr/exec/DatumExpression",
+					"method": "POST",
+					"upload": {
+						"EXAMPLE ONLY": "Remove this attribute and edit example as needed.",
+						"nodeId": 123,
+						"params": {
+							"expression": "hasOffset('power/1', 1) ? roundDown(latest('power/1').wattHours - offset('power/1',1).wattHours, 3) : 0"
+						}
+					}
+				},
+				{
+					"title": "List instructions",
+					"doc": "SolarUser-API#list-instructions",
+					"url": "/solaruser/api/v1/sec/instr?nodeIds={nodeIds}&states={states}&startDate=2022-01-01T00:00&endDate=2022-01-02T00:00"
+				},
+				{
+					"title": "View active instructions",
+					"doc": "SolarUser-API#view-active-instructions",
+					"url": "/solaruser/api/v1/sec/instr/viewActive?nodeIds={nodeIds}"
+				},
+				{
+					"title": "View pending instructions",
+					"doc": "SolarUser-API#view-pending-instructions",
+					"url": "/solaruser/api/v1/sec/instr/viewPending?nodeIds={nodeIds}"
+				},
+				{
+					"title": "View instructions by ID",
+					"doc": "SolarUser-API#view-instruction",
+					"url": "/solaruser/api/v1/sec/instr/view?ids={instructionIds}"
+				},
+				{
+					"title": "Update instructions state",
+					"doc": "SolarUser-API#update-instruction-state",
+					"url": "/solaruser/api/v1/sec/instr/updateState?ids={instructionIds}&state={instructionState:(Received|Executing|Declined|Completed)}",
+					"method": "POST"
+				}
+			]
+		},
+		{
+			"title": "Location Datum Metadata (read/write)",
+			"shortcuts": [
+				{
+					"title": "Add location metadata for a specific source",
+					"doc": "SolarUser-API#location-datum-metadata-add",
+					"url": "/solaruser/api/v1/sec/location/meta/{locationId}/{sourceId}",
+					"method": "POST"
+				},
+				{
+					"title": "Store location metadata for a specific source",
+					"doc": "SolarUser-API#location-datum-metadata-store",
+					"url": "/solaruser/api/v1/sec/location/meta/{locationId}/{sourceId}",
+					"method": "PUT"
+				},
+				{
+					"title": "Delete location metadata for a specific source",
+					"doc": "SolarUser-API#ocation-datum-metadata-delete",
+					"url": "/solaruser/api/v1/sec/location/meta/{locationId}/{sourceId}",
+					"method": "DELETE"
+				}
+			]
+		},
+		{
+			"title": "Location Datum Range",
+			"shortcuts": [
+				{
+					"title": "Interval",
+					"doc": "SolarQuery-API#location-reportable-interval",
+					"url": "/solaruser/api/v1/sec/location/datum/interval?locationId={locationId}"
+				},
+				{
+					"title": "Sources",
+					"doc": "SolarQuery-API#location-reportable-sources",
+					"url": "/solaruser/api/v1/sec/location/datum/sources?locationId={locationId}"
+				}
+			]
+		},
+		{
+			"title": "Node Metadata (read/write)",
+			"shortcuts": [
+				{
+					"title": "View specific node metadata",
+					"doc": "SolarUser-API#node-metadata-view",
+					"url": "/solaruser/api/v1/sec/nodes/meta/{nodeId}"
+				},
+				{
+					"title": "Find node metadata",
+					"doc": "SolarUser-API#node-metadata-list",
+					"url": "/solaruser/api/v1/sec/nodes/meta?nodeIds={nodeId}"
+				},
+				{
+					"title": "Add metadata for a specific node",
+					"doc": "SolarUser-API#node-metadata-add",
+					"url": "/solaruser/api/v1/sec/nodes/meta/{nodeId}",
+					"method": "POST"
+				},
+				{
+					"title": "Store metadata for a specific node",
+					"doc": "SolarUser-API#node-metadata-store",
+					"url": "/solaruser/api/v1/sec/nodes/meta/{nodeId}",
+					"method": "PUT"
+				},
+				{
+					"title": "Delete metadata for a specific node",
+					"doc": "SolarUser-API#node-metadata-delete",
+					"url": "/solaruser/api/v1/sec/nodes/meta/{nodeId}",
+					"method": "DELETE"
+				},
+				{
+					"title": "Update datum stream metadata",
+					"doc": "SolarUser-API#datum-stream-metadata-update",
+					"url": "/solaruser/api/v1/sec/datum/stream/meta/node/{streamId}",
+					"method": "PATCH"
+				}
+			]
+		},
+		{
+			"title": "User Events",
+			"shortcuts": [
+				{
+					"title": "List user events",
+					"doc": "SolarUser-API#user-app-event-list",
+					"url": "/solaruser/api/v1/sec/user/events?startDate={yyyy-MM-dd hh:mm}&endDate={yyyy-MM-dd hh:mm}&tags={ocpp,message,received}&searchFilter={(action%3DBootNotification)}"
+				}
+			]
+		},
+		{
+			"title": "User Metadata (read/write)",
+			"shortcuts": [
+				{
+					"title": "View acitve user metadata",
+					"doc": "SolarUser-API#user-metadata-view",
+					"url": "/solaruser/api/v1/sec/users/meta"
+				},
+				{
+					"title": "Add metadata for acitve user",
+					"doc": "SolarUser-API#user-metadata-add",
+					"url": "/solaruser/api/v1/sec/users/meta",
+					"method": "POST"
+				},
+				{
+					"title": "Store metadata for acitve user",
+					"doc": "SolarUser-API#user-metadata-store",
+					"url": "/solaruser/api/v1/sec/users/meta",
+					"method": "PUT"
+				},
+				{
+					"title": "Delete metadata for acitve user",
+					"doc": "SolarUser-API#user-metadata-delete",
+					"url": "/solaruser/api/v1/sec/users/meta",
+					"method": "DELETE"
 				}
 			]
 		}
