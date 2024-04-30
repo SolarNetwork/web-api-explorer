@@ -11,7 +11,7 @@ Fill in a valid SolarNetwork security token and secret, then start exploring!
 # Building from source
 
 To build yourself, clone or download this repository. You need to have
-Node 16+ installed. Then:
+Node 18.18+ installed. Then:
 
 ```sh
 # initialize dependencies
