@@ -1,6 +1,6 @@
 {
   "name": "solarnetwork-web-api-sampler",
-  "version": "2.0.1",
+  "version": "2.0.2-dev.0",
   "description": "SolarNetwork API explorer.",
   "keywords": [
     "solarnetwork",
