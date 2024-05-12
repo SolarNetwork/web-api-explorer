@@ -222,7 +222,6 @@ export default class Explorer {
 	}
 
 	authorize(): Headers {
-		const auth = this.authV2Builder();
 		const headers = new Headers();
 		headers.set(
 			HttpHeaders.ACCEPT,
@@ -232,8 +231,11 @@ export default class Explorer {
 				? "text/csv"
 				: "application/json"
 		);
-		headers.set(HttpHeaders.AUTHORIZATION, auth.buildWithSavedKey());
-		headers.set(HttpHeaders.X_SN_DATE, auth.requestDateHeaderValue!);
+		const auth = this.authV2Builder();
+		if (this.isAuthRequired()) {
+			headers.set(HttpHeaders.AUTHORIZATION, auth.buildWithSavedKey());
+			headers.set(HttpHeaders.X_SN_DATE, auth.requestDateHeaderValue!);
+		}
 		if (auth.httpHeaders.firstValue(HttpHeaders.CONTENT_TYPE)) {
 			headers.set(
 				HttpHeaders.CONTENT_TYPE,
