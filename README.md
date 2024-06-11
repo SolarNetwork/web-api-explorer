@@ -1,6 +1,6 @@
 # SolarNetwork Web API Explorer
 
-This project contains a webapp that helps you explore the SolarNetwork web API.
+This project contains a webapp that helps you explore the SolarNetwork web API. A live version of this is available here: https://go.solarnetwork.net/dev/api
 
 ![screenshot](docs/solarnetwork-web-api-explorer.png)
 
