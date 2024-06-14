@@ -6,7 +6,7 @@ This project contains a webapp that helps you explore the SolarNetwork web API. 
 
 # Use
 
-Fill in a valid SolarNetwork security token and secret, then start exploring!
+Fill in a valid SolarNetwork security token and secret, then start exploring! The API documentation is availalbe here:https://github.com/SolarNetwork/solarnetwork/wiki/SolarQuery-API
 
 # Building from source
 
