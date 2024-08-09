@@ -351,7 +351,7 @@ export default class SamplerApp {
 		$("#auth-message").text(signatureData);
 		$("#auth-sign-date").text(iso8601Date(authBuilder.date()));
 		$("#sign-key").text(
-			Hex.stringify(authBuilder.computeSigningKey(explore.creds.token))
+			Hex.stringify(authBuilder.computeSigningKey(explore.creds.secret))
 		);
 	}
 
