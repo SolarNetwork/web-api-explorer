@@ -547,9 +547,15 @@
 					"url": "/solaruser/api/v1/sec/instr/view?ids={instructionIds}"
 				},
 				{
-					"title": "Update instructions state",
+					"title": "Update instructions state by ID",
 					"doc": "SolarUser-API#update-instruction-state",
 					"url": "/solaruser/api/v1/sec/instr/updateState?ids={instructionIds}&state={instructionState:(Received|Executing|Declined|Completed)}",
+					"method": "POST"
+				},
+				{
+					"title": "Update instructions state matching criteria",
+					"doc": "SolarUser-API#update-instruction-state-matching-criteria",
+					"url": "/solaruser/api/v1/sec/instr/updateState?instructionIds={instructionIds}&nodeIds={nodeIds}&states={currentState:(Queued|Received|Executing|Declined|Completed)}&state={desiredState:Declined|Completed}",
 					"method": "POST"
 				}
 			]
