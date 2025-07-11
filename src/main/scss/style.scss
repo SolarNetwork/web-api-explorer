@@ -30,6 +30,12 @@ textarea {
 		"Courier New", monospace;
 }
 
+andypf-json-viewer {
+	font-size: 14px;
+	font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+		"Courier New", monospace;
+}
+
 .clickable {
 	cursor: pointer;
 }
@@ -87,7 +93,7 @@ pre.data {
 	border: 1px solid #888;
 	display: block;
 	color: #abb2bf;
-  	background: #282c34;
+	background: #282c34;
 	border-radius: 4px;
 	overflow-x: visible;
 	padding: 2px;

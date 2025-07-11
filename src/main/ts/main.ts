@@ -1,4 +1,5 @@
 import "../scss/style.scss";
+import "@andypf/json-viewer";
 import { replaceData } from "./utils";
 
 import hljs from "highlight.js/lib/core";
