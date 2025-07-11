@@ -269,10 +269,20 @@ export default class SamplerApp {
 	}
 
 	showResult(msg: string, highlight: boolean, output: string) {
-		var el = document.getElementById("result")!;
-		el.innerText = msg;
-		if (highlight && output !== "csv") {
-			el.innerHTML = hljs.highlight(msg, { language: output }).value;
+		const isJson = output === "json";
+		if (isJson && highlight) {
+			$("#json-result").show();
+			$("#text-result").hide();
+			const el = document.getElementById("json-viewer")! as any;
+			el.data = msg;
+		} else {
+			const el = document.getElementById("result")!;
+			el.innerText = msg;
+			if (highlight && output !== "csv") {
+				el.innerHTML = hljs.highlight(msg, { language: output }).value;
+			}
+			$("#json-result").hide();
+			$("#text-result").show();
 		}
 	}
 
