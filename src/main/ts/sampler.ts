@@ -102,8 +102,8 @@ export default class SamplerApp {
 				{
 					maxHistoryItemDisplayLength: 100,
 				},
-				urlQueryParse(queryParams)
-			)
+				urlQueryParse(queryParams),
+			),
 		);
 
 		this.snSettingsForm =
@@ -165,7 +165,7 @@ export default class SamplerApp {
 			i,
 			path = explore.servicePath;
 		const maxHistoryLength: number = this.config.value(
-			"maxHistoryItemDisplayLength"
+			"maxHistoryItemDisplayLength",
 		)! as number;
 
 		// don't add duplicate items
@@ -207,7 +207,7 @@ export default class SamplerApp {
 		}
 		form.find("input[name=useAuth]").removeAttr("checked");
 		form.find("input[name=useAuth][value=" + authType + "]").trigger(
-			"click"
+			"click",
 		);
 		this.explorerElements.path.value = path;
 		form.find("input[name=method]").removeAttr("checked");
@@ -279,7 +279,17 @@ export default class SamplerApp {
 				result = await xhr.text();
 			}
 		}
+		if (!xhr.ok) {
+			result = this.wordWrap(result, 80);
+		}
 		return result;
+	}
+
+	wordWrap(str: string, max: number, br: string = "\n") {
+		return str.replace(
+			new RegExp(`(?![^\\n]{1,${max}}$)([^\\n]{1,${max}})\\s`, "g"),
+			`$1${br}`,
+		);
 	}
 
 	showResult(msg: string, highlight: boolean, output: string) {
@@ -369,13 +379,13 @@ export default class SamplerApp {
 		var signatureData = authBuilder.computeSignatureData(canonicalReq);
 
 		$("#auth-header").text(
-			"Authorization: " + authBuilder.buildWithSavedKey()
+			"Authorization: " + authBuilder.buildWithSavedKey(),
 		);
 		$("#req-message").text(canonicalReq);
 		$("#auth-message").text(signatureData);
 		$("#auth-sign-date").text(iso8601Date(authBuilder.date()));
 		$("#sign-key").text(
-			Hex.stringify(authBuilder.computeSigningKey(explore.creds.secret))
+			Hex.stringify(authBuilder.computeSigningKey(explore.creds.secret)),
 		);
 	}
 
@@ -385,7 +395,7 @@ export default class SamplerApp {
 			creds,
 			this.explorerElements,
 			!(document.getElementById("auth-with-digest")! as HTMLInputElement)
-				.checked
+				.checked,
 		);
 		var curlOnly = (
 			document.getElementById("curl-only-checkbox")! as HTMLInputElement
@@ -405,7 +415,7 @@ export default class SamplerApp {
 			this.showResult(
 				await this.textForDisplay(res, explore.output),
 				highlight,
-				explore.output
+				explore.output,
 			);
 			if (res.ok) {
 				this.addHistoryItem(explore);
@@ -420,22 +430,22 @@ export default class SamplerApp {
 			this.solarUserShortcuts = data.solaruser as ShortcutGroup[];
 			SamplerApp.#populateShortcuts(
 				this.explorerElements.shortcutSolarQuery,
-				this.solarQueryShortcuts
+				this.solarQueryShortcuts,
 			);
 			SamplerApp.#populateShortcuts(
 				this.explorerElements.shortcutSolarUser,
-				this.solarUserShortcuts
+				this.solarUserShortcuts,
 			);
 		});
 	}
 
 	static #populateShortcuts(
 		menu: HTMLSelectElement,
-		groups: ShortcutGroup[]
+		groups: ShortcutGroup[],
 	) {
 		for (const group of groups) {
 			const optGroup = document.createElement(
-				"optgroup"
+				"optgroup",
 			) as HTMLOptGroupElement;
 			optGroup.label = group.title;
 			for (const shortcut of group.shortcuts) {
@@ -463,7 +473,7 @@ export default class SamplerApp {
 					"//" +
 					(window.location.host.indexOf(".solarnetwork.net") > 0
 						? "data.solarnetwork.net"
-						: window.location.host)
+						: window.location.host),
 			);
 		}
 
