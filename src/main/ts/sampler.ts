@@ -252,10 +252,24 @@ export default class SamplerApp {
 		var result = "";
 		if (xhr.status >= 400 && xhr.status < 422) {
 			result = "Unauthorized.";
-		} else if (xhr.ok) {
+		} else {
 			if (output === "json") {
 				try {
-					result = JSON.stringify(await xhr.json(), null, 2);
+					let json = await xhr.json();
+					if (!xhr.ok && json.message) {
+						result = json.message;
+					} else {
+						result = JSON.stringify(json, null, 2);
+					}
+					if (!xhr.ok) {
+						result =
+							"Error: " +
+							xhr.status +
+							" " +
+							xhr.statusText +
+							"\n" +
+							result;
+					}
 				} catch (e) {
 					result = await xhr.text();
 				}
