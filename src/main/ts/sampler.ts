@@ -5,14 +5,24 @@ import hljs from "highlight.js/lib/core";
 import { iso8601Date } from "solarnetwork-api-core/lib/util/dates";
 import { urlQueryParse } from "solarnetwork-api-core/lib/net/urls";
 import { Configuration } from "solarnetwork-api-core/lib/util";
-import { SnSettingsFormElements, ExplorerFormElements } from "./forms";
+import {
+	CONTENT_DIGEST_HEADER,
+	SIGNATURE_HEADER,
+	SIGNATURE_INPUT_HEADER,
+} from "solarnetwork-api-core/lib/net";
+import {
+	AuthType,
+	SigningKeyMode,
+	SnSettingsFormElements,
+	ExplorerFormElements,
+} from "./forms";
 import Credentials from "./credentials";
 import Explorer from "./explorer";
 
-var helpWindow: Window | null = null;
+let helpWindow: Window | null = null;
 
 function showDocLink(this: HTMLElement) {
-	var href = this.dataset.docLink;
+	const href = this.dataset.docLink;
 	if (href) {
 		if (!helpWindow || helpWindow.closed) {
 			helpWindow = window.open(href, "SolarNet-Help");
@@ -24,15 +34,14 @@ function showDocLink(this: HTMLElement) {
 }
 
 function copyElement(src: HTMLElement, elementId: string) {
-	var range,
-		selection = window.getSelection(),
-		curlEl = document.getElementById(elementId)!;
+	const selection = window.getSelection();
+	const curlEl = document.getElementById(elementId)!;
 
 	if (!(curlEl && curlEl.firstChild)) {
 		return;
 	}
 
-	range = document.createRange();
+	const range = document.createRange();
 
 	// work around Firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=730257
 	// where `range.selectNodeContents(e.target);` adds 4 spaces to start of copied text
@@ -45,7 +54,7 @@ function copyElement(src: HTMLElement, elementId: string) {
 		document.execCommand("copy");
 		selection.removeAllRanges();
 		if (src) {
-			let popover = Popover.getOrCreateInstance(src, {
+			const popover = Popover.getOrCreateInstance(src, {
 				title: "Copy to clipboard",
 				content: "Copied!",
 				animation: true,
@@ -128,8 +137,9 @@ export default class SamplerApp {
 
 	setupForUseAuth(input: HTMLInputElement) {
 		const el = $(input);
+		const authType = Number(el.val() as string) as AuthType;
 		let val = this.explorerElements.path.value;
-		if (el.val() === "0") {
+		if (authType === AuthType.None) {
 			val = val.replace(/\/sec\//, "/pub/");
 			$(this.snSettingsElements.token).attr("disabled", "disabled");
 			$(this.snSettingsElements.secret).attr("disabled", "disabled");
@@ -140,11 +150,16 @@ export default class SamplerApp {
 			$(this.snSettingsElements.secret).removeAttr("disabled");
 			$("#auth-result").show();
 		}
+		// the signing key mode only applies to RFC 9421
+		$("#key-mode-group").toggleClass(
+			"d-none",
+			authType !== AuthType.Rfc9421,
+		);
 		this.explorerElements.path.value = val;
 	}
 
 	setupForMethod(input: HTMLInputElement) {
-		var val = $(input).val();
+		const val = $(input).val();
 		if (val === "POST" || val === "PUT" || val === "PATCH") {
 			$("#upload").show();
 		} else {
@@ -158,12 +173,12 @@ export default class SamplerApp {
 	 * @param explore the explore
 	 */
 	addHistoryItem(explore: Explorer) {
-		var histSelect = $("#history"),
-			histEl = histSelect.get(0)! as HTMLSelectElement,
-			histItem: HTMLOptionElement,
-			displayPath,
-			i,
-			path = explore.servicePath;
+		const histSelect = $("#history");
+		const histEl = histSelect.get(0)! as HTMLSelectElement;
+		const path = explore.servicePath;
+		let histItem: HTMLOptionElement;
+		let displayPath;
+		let i;
 		const maxHistoryLength: number = this.config.value(
 			"maxHistoryItemDisplayLength",
 		)! as number;
@@ -194,7 +209,7 @@ export default class SamplerApp {
 	}
 
 	handleHistory(item: HTMLSelectElement) {
-		var formEl = item.form!,
+		const formEl = item.form!,
 			form = $(formEl),
 			path = item.value,
 			histItem = item.options[item.selectedIndex],
@@ -218,26 +233,26 @@ export default class SamplerApp {
 	}
 
 	static #formatXml(xml: string) {
-		var formatted = "";
-		var reg = /(>)(<)(\/*)/g;
+		let formatted = "";
+		const reg = /(>)(<)(\/*)/g;
 		xml = xml.replace(reg, "$1\r\n$2$3");
-		var pad = 0;
+		let pad = 0;
 		$.each(xml.split("\r\n"), function (_index, node) {
-			var indent = 0;
+			let indent = 0;
 			if (node.match(/.+<\/\w[^>]*>$/)) {
 				indent = 0;
 			} else if (node.match(/^<\/\w/)) {
 				if (pad != 0) {
 					pad -= 1;
 				}
-			} else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+			} else if (node.match(/^<\w[^>]*[^/]>.*$/)) {
 				indent = 1;
 			} else {
 				indent = 0;
 			}
 
-			var padding = "";
-			for (var i = 0; i < pad; i++) {
+			let padding = "";
+			for (let i = 0; i < pad; i++) {
 				padding += "  ";
 			}
 
@@ -249,13 +264,13 @@ export default class SamplerApp {
 	}
 
 	async textForDisplay(xhr: Response, output: string): Promise<string> {
-		var result = "";
+		let result: string;
 		if (xhr.status >= 400 && xhr.status < 422) {
 			result = "Unauthorized.";
 		} else {
 			if (output === "json") {
 				try {
-					let json = await xhr.json();
+					const json = await xhr.json();
 					if (!xhr.ok && json.message) {
 						result = json.message;
 					} else {
@@ -270,7 +285,7 @@ export default class SamplerApp {
 							"\n" +
 							result;
 					}
-				} catch (e) {
+				} catch {
 					result = await xhr.text();
 				}
 			} else if (output === "xml") {
@@ -373,10 +388,21 @@ export default class SamplerApp {
 		if (!explore.isAuthRequired()) {
 			return;
 		}
+		if (explore.isHttpSignature) {
+			this.#showHttpSignatureSupport(explore);
+		} else {
+			this.#showSnws2Support(explore);
+		}
+	}
 
-		var authBuilder = explore.authV2Builder();
-		var canonicalReq = authBuilder.buildCanonicalRequestData();
-		var signatureData = authBuilder.computeSignatureData(canonicalReq);
+	#showSnws2Support(explore: Explorer) {
+		$("#snws2-auth-support").removeClass("d-none");
+		$("#rfc9421-auth-support").addClass("d-none");
+		$("#auth-options").show();
+
+		const authBuilder = explore.authV2Builder();
+		const canonicalReq = authBuilder.buildCanonicalRequestData();
+		const signatureData = authBuilder.computeSignatureData(canonicalReq);
 
 		$("#auth-header").text(
 			"Authorization: " + authBuilder.buildWithSavedKey(),
@@ -389,15 +415,74 @@ export default class SamplerApp {
 		);
 	}
 
+	#showHttpSignatureSupport(explore: Explorer) {
+		$("#snws2-auth-support").addClass("d-none");
+		$("#rfc9421-auth-support").removeClass("d-none");
+		// the Digest header option is an SNWS2 concern; RFC 9421 always uses Content-Digest
+		$("#auth-options").hide();
+
+		const builder = explore.rfc9421Builder();
+		const base = builder.signatureBase();
+
+		const headers = [];
+		const contentDigest = builder.httpHeaders.firstValue(
+			CONTENT_DIGEST_HEADER,
+		);
+		if (contentDigest) {
+			headers.push(CONTENT_DIGEST_HEADER + ": " + contentDigest);
+		}
+		headers.push(
+			SIGNATURE_INPUT_HEADER + ": " + builder.signatureInputHeaderValue(),
+		);
+		headers.push(
+			SIGNATURE_HEADER +
+				": " +
+				builder.signatureHeaderValue(explore.creds.secret),
+		);
+		$("#sig-headers").text(headers.join("\n"));
+
+		$("#sig-covered").text(
+			builder.coveredComponents.map((c) => c.identifier).join("\n"),
+		);
+		$("#sig-base").text(base.value);
+		$("#sig-keyid").text(builder.keyId);
+
+		const derived = explore.keyMode === SigningKeyMode.Derived;
+		const key = builder.computeSigningKey(explore.creds.secret);
+		if (derived) {
+			$("#sig-key-intro").show();
+			$("#sig-key")
+				.text(Hex.stringify(key as CryptoJS.lib.WordArray))
+				.show();
+			$("#sig-key-note small").text(
+				"This key is derived from the token secret and expires 7 days" +
+					" after the signing date, so it can be given to a signer" +
+					" without disclosing the secret.",
+			);
+		} else {
+			// the signing key is the secret itself, so say what it is rather than print it
+			$("#sig-key-intro").hide();
+			$("#sig-key").empty().hide();
+			$("#sig-key-note small").text(
+				"The signing key is the token secret itself, UTF-8 encoded," +
+					" identified by the keyid signature parameter " +
+					builder.keyId +
+					". Any RFC 9421 implementation can sign this way, with only" +
+					" the token ID and secret. Choose the derived signing key" +
+					" to use an expiring key instead.",
+			);
+		}
+	}
+
 	async handleSamplerFormSubmit() {
-		var creds = new Credentials(this.snSettingsElements);
-		var explore = new Explorer(
+		const creds = new Credentials(this.snSettingsElements);
+		const explore = new Explorer(
 			creds,
 			this.explorerElements,
 			!(document.getElementById("auth-with-digest")! as HTMLInputElement)
 				.checked,
 		);
-		var curlOnly = (
+		const curlOnly = (
 			document.getElementById("curl-only-checkbox")! as HTMLInputElement
 		).checked;
 
@@ -411,7 +496,8 @@ export default class SamplerApp {
 		// make HTTP request and show the results
 		if (!curlOnly) {
 			const res: Response = await explore.submit();
-			var highlight = res.ok && !!this.explorerElements.highlight.checked;
+			const highlight =
+				res.ok && !!this.explorerElements.highlight.checked;
 			this.showResult(
 				await this.textForDisplay(res, explore.output),
 				highlight,
@@ -482,7 +568,7 @@ export default class SamplerApp {
 		// handle shortcuts menu
 		$("select.shortcuts").on("change", function (event) {
 			event.preventDefault();
-			var me = this as HTMLSelectElement;
+			const me = this as HTMLSelectElement;
 			$("select.shortcuts").not(me).prop("selectedIndex", 0);
 			app.handleShortcut(me);
 		});

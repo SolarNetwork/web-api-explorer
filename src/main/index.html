@@ -203,12 +203,49 @@
 											type="radio"
 											class="form-check-input"
 											name="useAuth"
+											value="9421"
+										/>
+										<label class="radio form-check-label">
+											<a
+												target="_blank"
+												href="https://www.rfc-editor.org/rfc/rfc9421.html"
+												>RFC 9421</a
+											>
+										</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input
+											type="radio"
+											class="form-check-input"
+											name="useAuth"
 											value="0"
 										/>
 										<label class="radio form-check-label">
 											None
 										</label>
 									</div>
+									<span
+										id="key-mode-group"
+										class="d-none ms-2 text-nowrap"
+									>
+										<label
+											class="form-check-label align-middle me-2"
+											for="key-mode"
+											>Signing key</label
+										>
+										<select
+											id="key-mode"
+											name="keyMode"
+											class="form-select form-select-sm d-inline-block w-auto align-middle"
+										>
+											<option value="derived" selected>
+												Derived signing key
+											</option>
+											<option value="secret">
+												Token secret
+											</option>
+										</select>
+									</span>
 								</div>
 							</div>
 						</div>
@@ -384,6 +421,7 @@
 								>
 							</div>
 						</form>
+						<div id="snws2-auth-support">
 						<p>
 							This shows the the
 							<a
@@ -436,6 +474,60 @@
 							<code id="auth-sign-date">YYYYMMDD</code>:
 						</p>
 						<pre id="sign-key" class="data"></pre>
+						</div>
+						<div id="rfc9421-auth-support" class="d-none">
+							<p>
+								This shows the computed
+								<a
+									target="_blank"
+									href="https://www.rfc-editor.org/rfc/rfc9421.html#name-the-signature-input-http-fi"
+									>HTTP message signature</a
+								>
+								fields. Send both with the request:
+							</p>
+							<pre id="sig-headers" class="data"></pre>
+							<p>
+								The following sections detail the steps taken to
+								generate them.
+							</p>
+							<h5>Covered components</h5>
+							<p>
+								These are the
+								<a
+									target="_blank"
+									href="https://www.rfc-editor.org/rfc/rfc9421.html#name-http-message-components"
+									>message components</a
+								>
+								the signature covers. SolarNetwork requires the
+								request method, authority and path, plus the query
+								when there is one, the content type and a
+								<code>Content-Digest</code> when there is request
+								content, and every <code>X-SN-*</code> header:
+							</p>
+							<pre id="sig-covered" class="data"></pre>
+							<h5>Signature base</h5>
+							<p>
+								This shows the
+								<a
+									target="_blank"
+									href="https://www.rfc-editor.org/rfc/rfc9421.html#name-creating-the-signature-base"
+									>signature base</a
+								>, the exact string that is signed. The last line
+								is the <code>@signature-params</code> value, which
+								is repeated in the
+								<code>Signature-Input</code> field so the server
+								can rebuild this string:
+							</p>
+							<pre id="sig-base" class="data"></pre>
+							<h5>Signing key</h5>
+							<p id="sig-key-intro">
+								This shows the hex-encoded signing key, identified
+								by the <code>keyid</code> signature parameter
+								<code id="sig-keyid">token</code>:
+							</p>
+							<pre id="sig-key" class="data"></pre>
+							<p id="sig-key-note" class="text-secondary"><small></small></p>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -24,6 +24,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "lint": "eslint --fix src/main",
+    "prettier": "prettier --config .prettierrc.json \"src/**/*.ts\" --check",
+    "prettier:write": "prettier --config .prettierrc.json \"src/**/*.ts\" --write",
     "release": "generate-release --current-version \"$(bin/remove-preid.cjs)\""
   },
   "ava": {
@@ -65,9 +68,10 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
+    "crypto-js": "^4.2.0",
     "highlight.js": "^11.11.1",
     "jquery": "^4.0.0",
-    "solarnetwork-api-core": "^3.4.2"
+    "solarnetwork-api-core": "file:../sn-api-core-js"
   },
   "devDependencies": {
     "@ava/typescript": "^7.0.0",
@@ -80,6 +84,7 @@
     "eslint": "^10.8.0",
     "generate-release": "^1.1.1",
     "npmversion": "^2.0.5",
+    "prettier": "^3.9.8",
     "sass": "^1.102.0",
     "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
