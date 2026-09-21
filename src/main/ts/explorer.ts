@@ -2,13 +2,17 @@ import $ from "jquery";
 import Credentials from "./credentials";
 import {
 	AuthorizationV2Builder,
+	CONTENT_DIGEST_HEADER,
 	EnvironmentConfig,
 	HostConfig,
 	HttpContentType,
 	HttpHeaders,
+	HttpMessageSignatureBuilder,
 	HttpMethod,
+	SIGNATURE_HEADER,
+	SIGNATURE_INPUT_HEADER,
 } from "solarnetwork-api-core/lib/net";
-import { ExplorerFormElements } from "./forms";
+import { AuthType, ExplorerFormElements, SigningKeyMode } from "./forms";
 
 /**
  * Helper class for handling the API Explorer request and response.
@@ -18,7 +22,8 @@ export default class Explorer {
 	readonly env: EnvironmentConfig & HostConfig;
 	readonly withoutDigestHeader: boolean;
 
-	readonly authType: number; // 0 for none, 2 for V2
+	readonly authType: AuthType;
+	readonly keyMode: SigningKeyMode;
 	readonly method: string;
 	readonly output: string;
 
@@ -30,6 +35,7 @@ export default class Explorer {
 	#contentType?: string;
 
 	#authBuilder?: AuthorizationV2Builder;
+	#sigBuilder?: HttpMessageSignatureBuilder;
 
 	/**
 	 * Constructor.
@@ -40,7 +46,7 @@ export default class Explorer {
 	constructor(
 		creds: Credentials,
 		form: ExplorerFormElements,
-		withoutDigestHeader: boolean
+		withoutDigestHeader: boolean,
 	) {
 		this.creds = creds;
 		this.env = creds.getEnvironment();
@@ -48,8 +54,12 @@ export default class Explorer {
 
 		const jForm = $(form.path.form!);
 		this.authType = Number(
-			jForm.find("input[name=useAuth]:checked").val() as string
-		);
+			jForm.find("input[name=useAuth]:checked").val() as string,
+		) as AuthType;
+		this.keyMode =
+			form.keyMode && form.keyMode.value === SigningKeyMode.Secret
+				? SigningKeyMode.Secret
+				: SigningKeyMode.Derived;
 		this.method = jForm.find("input[name=method]:checked").val() as string;
 		this.output = jForm.find("input[name=output]:checked").val() as string;
 		this.#path = form.path.value;
@@ -59,7 +69,7 @@ export default class Explorer {
 			this.#data = this.upload;
 			if (this.#data.length < 1) {
 				// move any parameters into post body
-				var a = document.createElement("a");
+				const a = document.createElement("a");
 				a.href = this.path;
 				this.path = a.pathname;
 				this.#data = a.search;
@@ -101,9 +111,9 @@ export default class Explorer {
 	 * @type {String}
 	 */
 	get authUrl() {
-		var protocol = this.env.protocol,
-			port = this.env.port,
-			url = protocol + "://" + this.env.host;
+		const protocol = this.env.protocol;
+		const port = this.env.port;
+		let url = protocol + "://" + this.env.host;
 		if (
 			port &&
 			((protocol === "https" && port !== 443) ||
@@ -133,7 +143,7 @@ export default class Explorer {
 	 * @returns the content type, or `undefined` if the request does not support content or has none
 	 */
 	get contentType(): string | undefined {
-		var cType = undefined;
+		let cType = undefined;
 		if (this.supportsContent && this.#data) {
 			cType = this.#contentType
 				? this.#contentType
@@ -157,7 +167,7 @@ export default class Explorer {
 	 * @returns `true` if authorization is being used
 	 */
 	isAuthRequired(): boolean {
-		return this.authType > 0;
+		return this.authType !== AuthType.None;
 	}
 
 	/**
@@ -186,20 +196,60 @@ export default class Explorer {
 		return this.#authBuilder;
 	}
 
+	/**
+	 * Test if the RFC 9421 HTTP message signature scheme is in use.
+	 *
+	 * @returns `true` if signing with RFC 9421
+	 */
+	get isHttpSignature(): boolean {
+		return this.authType === AuthType.Rfc9421;
+	}
+
+	/**
+	 * Create a new `HttpMessageSignatureBuilder` from this explorer, configured with the
+	 * request details.
+	 *
+	 * @returns the builder
+	 */
+	rfc9421Builder(): HttpMessageSignatureBuilder {
+		if (!this.#sigBuilder) {
+			this.#sigBuilder = this.#createSignatureBuilder();
+		}
+		return this.#sigBuilder;
+	}
+
+	#createSignatureBuilder(): HttpMessageSignatureBuilder {
+		const builder = new HttpMessageSignatureBuilder(this.creds.token)
+			.method(this.method)
+			.url(this.authUrl)
+			.date(this.creds.date)
+			.derivedSigningKey(this.keyMode === SigningKeyMode.Derived);
+		if (this.#contentType) {
+			builder.contentType(this.#contentType);
+		}
+		if (this.#data && this.method !== HttpMethod.GET) {
+			// RFC 9421 has no notion of message content, so a body is covered by covering
+			// a Content-Digest field that digests it; unlike SNWS2 this applies to
+			// form-encoded content too, which SNWS2 instead signs as query parameters
+			builder.contentDigest(this.#data);
+		}
+		return builder.coverRequiredComponents();
+	}
+
 	#createAuthBuilder(): AuthorizationV2Builder {
-		var authBuilder = new AuthorizationV2Builder(
+		const authBuilder = new AuthorizationV2Builder(
 			this.creds.token,
-			this.env
+			this.env,
 		);
-		var contentType = this.#contentType;
-		var url = this.authUrl;
+		const contentType = this.#contentType;
+		let url = this.authUrl;
 		if (
 			contentType &&
 			contentType.indexOf(HttpContentType.FORM_URLENCODED) >= 0
 		) {
 			url += "?" + this.#data;
 		}
-		var authBuilder = authBuilder
+		authBuilder
 			.method(this.method)
 			.url(url)
 			.snDate(true)
@@ -221,16 +271,47 @@ export default class Explorer {
 		return authBuilder;
 	}
 
+	/**
+	 * Get the `Accept` header value for the configured output.
+	 *
+	 * @returns the `Accept` value
+	 */
+	get acceptType(): string {
+		return this.output === "xml"
+			? "text/xml"
+			: this.output === "csv"
+				? "text/csv"
+				: "application/json";
+	}
+
 	authorize(): Headers {
 		const headers = new Headers();
-		headers.set(
-			HttpHeaders.ACCEPT,
-			this.output === "xml"
-				? "text/xml"
-				: this.output === "csv"
-				? "text/csv"
-				: "application/json"
-		);
+		headers.set(HttpHeaders.ACCEPT, this.acceptType);
+
+		if (this.isHttpSignature) {
+			const sig = this.rfc9421Builder();
+			if (this.isAuthRequired()) {
+				headers.set(
+					SIGNATURE_INPUT_HEADER,
+					sig.signatureInputHeaderValue(),
+				);
+				headers.set(
+					SIGNATURE_HEADER,
+					sig.signatureHeaderValue(this.creds.secret),
+				);
+			}
+			const contentDigest = sig.httpHeaders.firstValue(
+				CONTENT_DIGEST_HEADER,
+			);
+			if (contentDigest) {
+				headers.set(CONTENT_DIGEST_HEADER, contentDigest);
+			}
+			if (this.#contentType) {
+				headers.set(HttpHeaders.CONTENT_TYPE, this.#contentType);
+			}
+			return headers;
+		}
+
 		const auth = this.authV2Builder();
 		if (this.isAuthRequired()) {
 			headers.set(HttpHeaders.AUTHORIZATION, auth.buildWithSavedKey());
@@ -239,13 +320,13 @@ export default class Explorer {
 		if (auth.httpHeaders.firstValue(HttpHeaders.CONTENT_TYPE)) {
 			headers.set(
 				HttpHeaders.CONTENT_TYPE,
-				auth.httpHeaders.firstValue(HttpHeaders.CONTENT_TYPE)
+				auth.httpHeaders.firstValue(HttpHeaders.CONTENT_TYPE),
 			);
 		}
 		if (auth.httpHeaders.firstValue(HttpHeaders.DIGEST)) {
 			headers.set(
 				HttpHeaders.DIGEST,
-				auth.httpHeaders.firstValue(HttpHeaders.DIGEST)
+				auth.httpHeaders.firstValue(HttpHeaders.DIGEST),
 			);
 		}
 		return headers;
@@ -257,41 +338,66 @@ export default class Explorer {
 	 * @returns the `curl` command
 	 */
 	curl(): string {
-		var authBuilder = this.authV2Builder();
-		var curl =
+		let curl =
 			"curl" +
 			(this.method !== "GET" ? " -X " + this.method : "") +
 			" -H 'Accept: " +
-			(this.output === "xml"
-				? "text/xml"
-				: this.output === "csv"
-				? "text/csv"
-				: "application/json") +
+			this.acceptType +
 			"'";
 
-		if (authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST)) {
-			curl +=
-				" -H '" +
-				HttpHeaders.DIGEST +
-				": " +
-				authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST) +
-				"'";
+		if (this.isHttpSignature) {
+			const sig = this.rfc9421Builder();
+			const contentDigest = sig.httpHeaders.firstValue(
+				CONTENT_DIGEST_HEADER,
+			);
+			if (contentDigest) {
+				curl +=
+					" -H '" +
+					CONTENT_DIGEST_HEADER +
+					": " +
+					contentDigest +
+					"'";
+			}
+			if (this.isAuthRequired()) {
+				curl +=
+					" -H '" +
+					SIGNATURE_INPUT_HEADER +
+					": " +
+					sig.signatureInputHeaderValue() +
+					"'";
+				curl +=
+					" -H '" +
+					SIGNATURE_HEADER +
+					": " +
+					sig.signatureHeaderValue(this.creds.secret) +
+					"'";
+			}
+		} else {
+			const authBuilder = this.authV2Builder();
+			if (authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST)) {
+				curl +=
+					" -H '" +
+					HttpHeaders.DIGEST +
+					": " +
+					authBuilder.httpHeaders.firstValue(HttpHeaders.DIGEST) +
+					"'";
+			}
+			if (this.isAuthRequired()) {
+				curl +=
+					" -H '" +
+					HttpHeaders.X_SN_DATE +
+					": " +
+					this.creds.date.toUTCString() +
+					"'";
+				curl +=
+					" -H '" +
+					HttpHeaders.AUTHORIZATION +
+					": " +
+					authBuilder.buildWithSavedKey() +
+					"'";
+			}
 		}
 
-		if (this.isAuthRequired()) {
-			curl +=
-				" -H '" +
-				HttpHeaders.X_SN_DATE +
-				": " +
-				this.creds.date.toUTCString() +
-				"'";
-			curl +=
-				" -H '" +
-				HttpHeaders.AUTHORIZATION +
-				": " +
-				authBuilder.buildWithSavedKey() +
-				"'";
-		}
 		if (this.#data && this.method !== HttpMethod.GET) {
 			curl +=
 				" -H '" +

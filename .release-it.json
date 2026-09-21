@@ -1,0 +1,38 @@
+{
+  "$schema": "https://unpkg.com/release-it/schema/release-it.json",
+  "hooks": {
+    "before:init": [
+      "git diff --quiet HEAD || (echo 'Working dir must be clean.' >&2; exit 1)",
+      "git fetch origin",
+      "git checkout develop",
+      "git merge --ff-only origin/develop",
+      "git checkout master",
+      "git merge --ff-only origin/master",
+      "git checkout develop"
+    ],
+    "before:bump": "git flow release start --no-fetch --quiet ${version}",
+    "after:bump": "npm run build",
+    "after:release": [
+      "git -c commit.gpgSign=true flow release finish --sign --no-fetch --no-ff --push --message \"Release ${version}\" ${version}",
+      "git checkout develop",
+      "npm version prepatch --preid dev --no-git-tag-version",
+      "git commit -S -am \"Bump to dev version: $(node -p \"require('./package.json').version\")\"",
+      "git push origin develop"
+    ]
+  },
+  "git": {
+    "requireBranch": "develop",
+    "requireCleanWorkingDir": false,
+    "requireUpstream": false,
+    "commitMessage": "Release ${version}",
+    "commitArgs": ["-S"],
+    "tag": false,
+    "push": false
+  },
+  "npm": {
+    "publish": false
+  },
+  "github": {
+    "release": false
+  }
+}

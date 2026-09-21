@@ -40,9 +40,9 @@ export default class Credentials {
 	 * @returns the environment
 	 */
 	getEnvironment(): EnvironmentConfig & HostConfig {
-		let config: Partial<HostConfig> = {};
+		const config: Partial<HostConfig> = {};
 		if (this.host) {
-			let a = document.createElement("a");
+			const a = document.createElement("a");
 			a.href = this.host;
 			config.host = a.hostname;
 			config.protocol = a.protocol.substring(0, a.protocol.length - 1);
