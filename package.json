@@ -25,8 +25,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint --fix src/main",
-    "prettier": "prettier --config .prettierrc.json \"src/**/*.ts\" --check",
-    "prettier:write": "prettier --config .prettierrc.json \"src/**/*.ts\" --write",
+    "prettier": "prettier --config .prettierrc.json \"src/**/*.ts\" \"src/main/**/*.html\" --check",
+    "prettier:write": "prettier --config .prettierrc.json \"src/**/*.ts\" \"src/main/**/*.html\" --write",
     "release": "release-it"
   },
   "ava": {
