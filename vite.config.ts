@@ -20,8 +20,8 @@ export default defineConfig({
 		preprocessorOptions: {
 			scss: {
 				silenceDeprecations: [
+					"if-function",
 					"import",
-					"mixed-decls",
 					"color-functions",
 					"global-builtin",
 				],

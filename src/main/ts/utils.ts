@@ -10,7 +10,7 @@
 export function replaceData<T extends HTMLElement>(root: T, data: any): T {
 	for (const prop in data) {
 		for (const el of root.querySelectorAll(
-			".data-" + prop
+			".data-" + prop,
 		) as NodeListOf<HTMLElement>) {
 			const val = data[prop];
 			el.textContent = val !== undefined ? "" + val : "";
